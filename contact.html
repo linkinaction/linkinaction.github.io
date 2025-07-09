@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact - Link in Action</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Link in Action</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="community_directory.html">Community Directory</a>
+            <a href="join_the_network.html">Join</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main class="section">
+        <h2>Contact Us</h2>
+        <p>If you have questions or need assistance, please reach out to us using the form below.</p>
+        <form action="mailto:linkinaction@gmail.com" method="post" enctype="text/plain">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="message">Message:</label><br>
+            <textarea id="message" name="message" rows="5" required></textarea><br><br>
+
+            <button type="submit">Send Message</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Link in Action. All rights reserved.</p>
+    </footer>
+</body>
+</html>

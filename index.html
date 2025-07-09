@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Link in Action</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            height: 3px;
+            width: 25px;
+            background: var(--text-color);
+            margin: 4px 0;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        nav a {
+            margin: 0 1rem;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            nav {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: var(--background-color);
+                position: absolute;
+                top: 70px;
+                left: 0;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            nav.active {
+                display: flex;
+            }
+
+            nav a {
+                margin: 1rem;
+            }
+        }
+
+        .hero {
+            background: linear-gradient(rgba(173, 216, 230, 0.6), rgba(177, 156, 217, 0.6)), url('hero.jpg') center/cover no-repeat;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .welcome-section {
+            padding: 4rem 2rem;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+
+        .welcome-section h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .welcome-section p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto 1rem auto;
+        }
+
+        .slogan {
+            font-style: italic;
+            font-weight: bold;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        footer {
+            background-color: var(--accent-color);
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Link in Action</h1>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav id="navbar">
+            <a href="index.html">Home</a>
+            <a href="community_directory.html">Community Directory</a>
+            <a href="join_the_network.html">Join</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Welcome to Link In Action</h1>
+            <p>Your Link to Calgary’s Community Resources</p>
+            <a href="community_directory.html" class="cta-button">Explore Community Resources</a>
+        </section>
+
+        <section class="welcome-section">
+            <h2>Welcome to Link In Action</h2>
+            <p>Calgary’s centralized platform for discovering community programs and services. Whether you’re new to the city or seeking support, we make it easy to find the right programs for your needs. With many organizations providing similar services and important resources often hard to find, Link In Action brings clarity, access, and connection to the forefront of community support.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Link in Action. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById('navbar');
+            nav.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
