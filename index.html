@@ -23,7 +23,7 @@
         // Global variables for Firebase (provided by the environment)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? initialAuthToken : null;
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
@@ -34,7 +34,7 @@
         window.firebaseApp = app;
         window.firebaseAuth = auth;
         window.firebaseDb = db;
-        window.currentUserId = null;
+        window.currentUserId = null; // Still useful for auth status, even if not used for collection path directly
         window.isAuthReady = false;
 
         // Authenticate user
@@ -95,15 +95,15 @@
     <!-- Header -->
     <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#home" class="nav-link text-2xl font-bold text-gray-900">Link in Action</a>
+            <a href="/" class="nav-link text-2xl font-bold text-gray-900">Link in Action</a>
 
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="#home" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300 active">Home</a>
-                <a href="#directory" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Community Directory</a>
-                <a href="#join" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Join the Network</a>
-                <a href="#about" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">About</a>
-                <a href="#contact" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Contact</a>
+                <a href="/" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300 active">Home</a>
+                <a href="/directory" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Community Directory</a>
+                <a href="/join" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Join the Network</a>
+                <a href="/about" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">About</a>
+                <a href="/contact" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Contact</a>
             </nav>
 
             <!-- Mobile Menu Button -->
@@ -116,11 +116,11 @@
 
         <!-- Mobile Navigation -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
-            <a href="#home" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Home</a>
-            <a href="#directory" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Community Directory</a>
-            <a href="#join" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Join the Network</a>
-            <a href="#about" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">About</a>
-            <a href="#contact" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Contact</a>
+            <a href="/" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Home</a>
+            <a href="/directory" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Community Directory</a>
+            <a href="/join" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Join the Network</a>
+            <a href="/about" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">About</a>
+            <a href="/contact" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Contact</a>
         </div>
     </header>
 
@@ -130,13 +130,14 @@
         <section id="home" class="page-section active">
             <div class="relative bg-indigo-700">
                 <div class="absolute inset-0">
-                    <img class="w-full h-full object-cover" src="https://placehold.co/1600x900/312e81/ffffff?text=Calgary+Skyline" alt="Calgary skyline background">
+                    <!-- Updated hero image source -->
+                    <img class="w-full h-full object-cover" src="./images/hero.jpg" alt="Calgary skyline with a modern bridge at dusk" onerror="this.onerror=null;this.src='https://placehold.co/1600x900/312e81/ffffff?text=Calgary+Skyline+Fallback';">
                     <div class="absolute inset-0 bg-indigo-800 mix-blend-multiply" aria-hidden="true"></div>
                 </div>
                 <div class="relative max-w-4xl mx-auto text-center py-24 px-6 sm:py-32 lg:py-48">
                     <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">Welcome to Link In Action</h1>
                     <p class="mt-6 text-xl text-indigo-100">Your Link to Calgary’s Community Resources</p>
-                    <a href="#directory" class="nav-link mt-8 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto transition-colors">
+                    <a href="/directory" class="nav-link mt-8 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto transition-colors">
                         Explore Community Resources
                     </a>
                 </div>
@@ -270,17 +271,17 @@
     <footer class="bg-gray-800 text-white">
         <div class="container mx-auto py-8 px-6 text-center">
             <div class="flex justify-center space-x-6">
-                <!-- LinkedIn Image Icon (assuming images/linkedin.png exists in your repo) -->
+                <!-- LinkedIn Image Icon -->
                 <a href="https://www.linkedin.com/company/linkinaction" target="_blank" aria-label="LinkedIn" class="text-white hover:opacity-75 transition-opacity">
-                    <img src="./images/linkedin.png" alt="LinkedIn Logo" class="w-7 h-7">
+                    <img src="./images/linkedin.jpg" alt="LinkedIn Logo" class="w-7 h-7" onerror="this.onerror=null;this.src='https://placehold.co/28x28/0A66C2/ffffff?text=LI'; console.error('LinkedIn icon failed to load');">
                 </a>
-                <!-- Instagram Image Icon (assuming images/instagram.png exists in your repo) -->
+                <!-- Instagram Image Icon -->
                 <a href="https://www.instagram.com/linkinaction" target="_blank" aria-label="Instagram" class="text-white hover:opacity-75 transition-opacity">
-                    <img src="./images/instagram.png" alt="Instagram Logo" class="w-7 h-7">
+                    <img src="./images/instagram.jpg" alt="Instagram Logo" class="w-7 h-7" onerror="this.onerror=null;this.src='https://placehold.co/28x28/E1306C/ffffff?text=IG'; console.error('Instagram icon failed to load');">
                 </a>
-                <!-- Email Image Icon (assuming images/email.png exists in your repo) -->
+                <!-- Email Image Icon -->
                 <a href="mailto:linkinaction@gmail.com" aria-label="Email" class="text-white hover:opacity-75 transition-opacity">
-                    <img src="./images/email.png" alt="Email Icon" class="w-7 h-7">
+                    <img src="./images/email.jpg" alt="Email Icon" class="w-7 h-7" onerror="this.onerror=null;this.src='https://placehold.co/28x28/D44638/ffffff?text=Email'; console.error('Email icon failed to load');">
                 </a>
             </div>
         </div>
@@ -359,44 +360,55 @@
             }
 
             // --- Page Navigation Logic ---
-            function showSection(hash) {
-                // Default to #home if hash is empty or just '#'
-                const targetHash = (hash === '' || hash === '#') ? '#home' : hash;
+            // Maps URL paths to section IDs
+            const pathToSectionIdMap = {
+                '/': '#home',
+                '/directory': '#directory',
+                '/join': '#join',
+                '/about': '#about',
+                '/contact': '#contact'
+            };
 
-                // Hide all sections
+            function showSection(path) {
+                const sectionId = pathToSectionIdMap[path];
+
+                if (!sectionId) {
+                    console.warn(`No section found for path: ${path}. Defaulting to home.`);
+                    history.replaceState(null, null, '/');
+                    showSection('/'); // Recurse to show home
+                    return;
+                }
+
                 sections.forEach(section => {
                     section.classList.remove('active');
                 });
 
-                // Show the target section
-                const targetSection = document.querySelector(targetHash);
+                const targetSection = document.querySelector(sectionId);
                 if (targetSection) {
                     targetSection.classList.add('active');
+                } else {
+                    console.error(`Target section element not found for ID: ${sectionId}`);
                 }
 
-                // Update active state for nav links
+                // Update active state for nav links based on the current path
                 navLinks.forEach(link => {
-                    // Use getAttribute to get the literal href value
-                    if (link.getAttribute('href') === targetHash) {
+                    const linkPath = link.getAttribute('href');
+                    if (linkPath === path) {
                         link.classList.add('active');
                     } else {
                         link.classList.remove('active');
                     }
                 });
 
-                // Close mobile menu after navigation
                 mobileMenu.classList.add('hidden');
-
-                // Scroll to top of the page
                 window.scrollTo(0, 0);
 
                 // Initialize map if on directory section
-                if (targetHash === '#directory' && typeof google !== 'undefined' && typeof google.maps !== 'undefined' && !map) {
+                if (sectionId === '#directory' && typeof google !== 'undefined' && typeof google.maps !== 'undefined' && !map) {
                     initMap();
-                } else if (targetHash === '#directory' && map) {
-                    // If map already initialized, just ensure it's displayed
+                } else if (sectionId === '#directory' && map) {
                     google.maps.event.trigger(map, 'resize');
-                    map.setCenter(map.getCenter()); // Recenter map after resize
+                    map.setCenter(map.getCenter());
                 }
             }
 
@@ -405,57 +417,41 @@
                 firebaseDb = window.firebaseDb;
                 currentUserId = window.currentUserId;
 
-                // Initialize map if on directory section and auth is ready
-                if (window.location.hash === '#directory' || window.location.hash === '') {
+                // Load Google Maps script once Firebase is ready and if on directory section
+                if (document.querySelector('#directory').classList.contains('active')) {
                     loadGoogleMapsScript();
                 }
             });
 
             // Fetch and display resources in real-time
             function fetchResourcesAndAddMarkers() {
-                const resourcesListDiv = document.getElementById('resources-list');
+                // The resources list div is hidden by CSS, so no need to update its innerHTML directly for display.
+                // We still need to fetch data to populate the map markers.
+                const resourcesListDiv = document.getElementById('resources-list'); // Still reference for error logging
 
                 if (!firebaseDb || !currentUserId) {
                     // This message will only show if Firebase isn't ready or user isn't authenticated
-                    resourcesListDiv.innerHTML = '<p class="text-center text-gray-500">Please wait, connecting to resources...</p>';
+                    // (though the div is hidden, this logic remains for potential future visibility)
+                    console.warn("Firebase not ready or user not authenticated for fetching resources.");
                     document.addEventListener('firebaseAuthReady', fetchResourcesAndAddMarkers);
                     return;
                 }
 
-                // Query the private collection for the current user
-                const q = query(collection(firebaseDb, `artifacts/${window.appId}/users/${currentUserId}/community_resources`));
+                // Query the PUBLIC collection for community resources
+                const q = query(collection(firebaseDb, `artifacts/${window.appId}/public/data/community_resources`));
 
                 onSnapshot(q, (snapshot) => {
-                    resourcesListDiv.innerHTML = ''; // Clear existing list
                     markers.forEach(marker => marker.setMap(null)); // Clear existing map markers
                     markers = []; // Reset markers array
 
                     if (snapshot.empty) {
-                        // This message will appear if no resources are found in the database.
-                        // You can still add resources directly via the Firebase console.
-                        resourcesListDiv.innerHTML = '<p class="text-center text-gray-500">No community resources found.</p>';
+                        console.log("No community resources found in Firestore (public collection).");
                         return;
                     }
 
                     snapshot.forEach((doc) => {
                         const resource = doc.data();
-                        const resourceId = doc.id;
-
-                        // Create card for resource list (this part is now hidden by CSS but data is still processed)
-                        const resourceCard = document.createElement('div');
-                        resourceCard.className = 'bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200';
-                        resourceCard.innerHTML = `
-                            <h4 class="text-xl font-semibold text-indigo-700">${resource.name}</h4>
-                            <p class="text-gray-600 mt-2"><strong>Type:</strong> ${resource.type}</p>
-                            <p class="text-gray-600"><strong>Address:</strong> ${resource.address}</p>
-                            <p class="text-gray-600 mt-2">${resource.description}</p>
-                            <p class="text-gray-500 text-xs mt-3">Added by: ${resource.userId} on ${resource.timestamp ? new Date(resource.timestamp.toDate()).toLocaleString() : 'N/A'}</p>
-                        `;
-                        // resourcesListDiv.appendChild(resourceCard); // This line is commented out to hide the list display
-
                         // Add marker to map (using dummy coordinates for now, ideally geocode address)
-                        // In a real application, you'd geocode `resource.address` to get lat/lng
-                        // For demonstration, we'll use random offsets from Calgary center
                         if (map) {
                             const latOffset = (Math.random() - 0.5) * 0.05; // +/- 0.025 degrees
                             const lngOffset = (Math.random() - 0.5) * 0.05;
@@ -465,8 +461,8 @@
                         }
                     });
                 }, (error) => {
-                    console.error("Error fetching documents: ", error);
-                    resourcesListDiv.innerHTML = '<p class="text-center text-red-500">Failed to load resources. Please try again later.</p>';
+                    console.error("Error fetching documents from Firestore: ", error);
+                    // Log the error, but don't display it to the user as the list is hidden
                 });
             }
 
@@ -527,20 +523,20 @@
                 });
             }
 
-            // --- Event Listeners ---
+            // --- Event Listeners for Navigation ---
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const targetHash = this.getAttribute('href');
-                    // Update URL hash without jumping
-                    history.pushState(null, null, targetHash);
-                    showSection(targetHash);
+                    const targetPath = link.getAttribute('href'); // e.g., '/', '/directory'
+                    history.pushState(null, null, targetPath);
+                    showSection(targetPath);
                 });
             });
 
-            // Handle browser back/forward buttons
             window.addEventListener('popstate', function() {
-                showSection(window.location.hash);
+                // When back/forward, determine which section to show based on current pathname
+                const currentPath = window.location.pathname;
+                showSection(currentPath);
             });
 
             // Toggle mobile menu
@@ -548,12 +544,19 @@
                 mobileMenu.classList.toggle('hidden');
             });
 
-            // Show initial section based on URL hash
-            showSection(window.location.hash);
+            // --- Initial page load handling ---
+            // This handles both direct access (e.g., /directory) and the 404.html redirect trick
+            let initialPath = window.location.pathname;
+            let initialHash = window.location.hash;
 
-            // Load Google Maps script initially if on directory or home (to ensure it's ready)
-            if (window.location.hash === '#directory' || window.location.hash === '') {
-                loadGoogleMapsScript();
+            if (initialHash.startsWith('#/')) {
+                // This means 404.html redirected us here (e.g., /#/directory)
+                const cleanPathFromHash = initialHash.substring(1); // Removes the first '#' -> /directory
+                history.replaceState(null, null, cleanPathFromHash); // Cleans up the URL to /directory
+                showSection(cleanPathFromHash);
+            } else {
+                // Standard initial load (e.g., / or /directory if server handles it directly)
+                showSection(initialPath);
             }
         });
     </script>
