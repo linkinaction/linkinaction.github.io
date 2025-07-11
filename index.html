@@ -1,168 +1,281 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <title>Link in Action</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <title>Link in Action - Your Link to Calgary’s Community Resources</title>
+    
+    <!-- Tailwind CSS for modern, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts for professional typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        .menu-toggle {
+        /* Custom styles to complement Tailwind */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style for the active navigation link */
+        .nav-link.active {
+            color: #4f46e5; /* Indigo 600 */
+            font-weight: 600;
+        }
+        /* Hide sections by default */
+        .page-section {
             display: none;
-            flex-direction: column;
-            cursor: pointer;
         }
-
-        .menu-toggle span {
-            height: 3px;
-            width: 25px;
-            background: var(--text-color);
-            margin: 4px 0;
-        }
-
-        nav {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        nav a {
-            margin: 0 1rem;
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: bold;
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: flex;
-            }
-
-            nav {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                background-color: var(--background-color);
-                position: absolute;
-                top: 70px;
-                left: 0;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-
-            nav.active {
-                display: flex;
-            }
-
-            nav a {
-                margin: 1rem;
-            }
-        }
-
-        .hero {
-            background: linear-gradient(rgba(173, 216, 230, 0.6), rgba(177, 156, 217, 0.6)), url('hero.jpg') center/cover no-repeat;
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
-            padding: 2rem;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin-bottom: 2rem;
-        }
-
-        .cta-button {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .welcome-section {
-            padding: 4rem 2rem;
-            text-align: center;
-            background-color: #f9f9f9;
-        }
-
-        .welcome-section h2 {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .welcome-section p {
-            font-size: 1.1rem;
-            max-width: 800px;
-            margin: 0 auto 1rem auto;
-        }
-
-        .slogan {
-            font-style: italic;
-            font-weight: bold;
-            color: var(--accent-color);
-            font-size: 1.2rem;
-        }
-
-        footer {
-            background-color: var(--accent-color);
-            text-align: center;
-            padding: 2rem;
-            font-size: 0.9rem;
+        /* Show the active section */
+        .page-section.active {
+            display: block;
         }
     </style>
 </head>
-<body>
-    <header>
-        <h1>Link in Action</h1>
-        <div class="menu-toggle" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#home" class="nav-link text-2xl font-bold text-gray-900">Link in Action</a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300 active">Home</a>
+                <a href="#directory" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Community Directory</a>
+                <a href="#join" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Join the Network</a>
+                <a href="#about" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">About</a>
+                <a href="#contact" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Contact</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-900 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
         </div>
-        <nav id="navbar">
-            <a href="index.html">Home</a>
-            <a href="community_directory.html">Community Directory</a>
-            <a href="join_the_network.html">Join</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-        </nav>
+        
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <a href="#home" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Home</a>
+            <a href="#directory" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Community Directory</a>
+            <a href="#join" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Join the Network</a>
+            <a href="#about" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">About</a>
+            <a href="#contact" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Contact</a>
+        </div>
     </header>
 
+    <!-- Main Content Area -->
     <main>
-        <section class="hero">
-            <h1>Welcome to Link In Action</h1>
-            <p>Your Link to Calgary’s Community Resources</p>
-            <a href="community_directory.html" class="cta-button">Explore Community Resources</a>
+        <!-- Home Section -->
+        <section id="home" class="page-section active">
+            <div class="relative bg-indigo-700">
+                <div class="absolute inset-0">
+                    <img class="w-full h-full object-cover" src="https://placehold.co/1600x900/312e81/ffffff?text=Calgary+Skyline" alt="Calgary skyline background">
+                    <div class="absolute inset-0 bg-indigo-800 mix-blend-multiply" aria-hidden="true"></div>
+                </div>
+                <div class="relative max-w-4xl mx-auto text-center py-24 px-6 sm:py-32 lg:py-48">
+                    <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">Welcome to Link In Action</h1>
+                    <p class="mt-6 text-xl text-indigo-100">Your Link to Calgary’s Community Resources</p>
+                    <a href="#directory" class="nav-link mt-8 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto transition-colors">
+                        Explore Community Resources
+                    </a>
+                </div>
+            </div>
+             <div class="bg-white">
+                <div class="max-w-4xl mx-auto py-16 px-6 sm:py-24 lg:px-8 text-center">
+                    <h2 class="text-3xl font-extrabold text-gray-900">Link In Action</h2>
+                    <p class="mt-4 text-lg text-gray-600">Calgary’s centralized platform for discovering community programs and services. Whether you’re new to the city or seeking support, we make it easy to find the right programs for your needs. With many organizations providing similar services and important resources often hard to find, Link In Action brings clarity, access, and connection to the forefront of community support.</p>
+                </div>
+            </div>
         </section>
 
-        <section class="welcome-section">
-            <h2>Link In Action</h2>
-            <p>Calgary’s centralized platform for discovering community programs and services. Whether you’re new to the city or seeking support, we make it easy to find the right programs for your needs. With many organizations providing similar services and important resources often hard to find, Link In Action brings clarity, access, and connection to the forefront of community support.</p>
+        <!-- Community Directory Section -->
+        <section id="directory" class="page-section py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Community Directory</h2>
+                    <p class="mt-4 text-lg text-gray-600">Find the resources you need, right in your community.</p>
+                </div>
+
+                <!-- Search Form -->
+                <div class="bg-gray-100 p-8 rounded-lg shadow-md mb-12">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+                        <input type="text" placeholder="Search by keyword" class="col-span-1 xl:col-span-2 w-full p-3 rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                        <select class="w-full p-3 rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option>Program Type</option><option>Legal Aid</option><option>Housing</option><option>Language Classes</option>
+                        </select>
+                        <select class="w-full p-3 rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option>Location</option><option>NE</option><option>NW</option><option>SE</option><option>SW</option>
+                        </select>
+                        <select class="w-full p-3 rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option>Price</option><option>Free</option><option>Low Cost</option><option>Paid</option>
+                        </select>
+                        <button class="w-full bg-indigo-600 text-white p-3 rounded-md font-semibold hover:bg-indigo-700 transition-colors">Search</button>
+                    </div>
+                </div>
+
+                <!-- Map Placeholder -->
+                <div class="bg-gray-200 rounded-lg h-96 flex items-center justify-center text-gray-500 text-xl font-semibold shadow-inner">
+                    [ Interactive Map of Services Placeholder ]
+                </div>
+            </div>
+        </section>
+
+        <!-- Join the Network Section -->
+        <section id="join" class="page-section py-16 sm:py-24">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Join the Network</h2>
+                    <p class="mt-4 text-lg text-gray-600">Get involved and make a difference in our community.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-2">Volunteer Opportunities</h3>
+                        <p class="text-gray-600">Organizations may list volunteer opportunities here. (Pending consent)</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-2">Calls to Action</h3>
+                        <p class="text-gray-600">Community members and organizations can respond to posted calls to action.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-2">Research Posters</h3>
+                        <p class="text-gray-600">Posters targeting immigrants or newcomers can be listed here.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="page-section py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">About Us</h2>
+                </div>
+                <div class="space-y-12">
+                    <div>
+                        <h3 class="text-2xl font-bold text-indigo-600 mb-4">Our Mission</h3>
+                        <p class="text-lg text-gray-600">Link In Action was developed to enhance access to community services by providing a centralized, user-friendly digital platform that connects individuals with local organizations and programs in Calgary. Our mission is to bridge service gaps, promote inclusion, and empower individuals through streamlined access to vital resources.</p>
+                    </div>
+                     <div>
+                        <h3 class="text-2xl font-bold text-indigo-600 mb-4">Our Objectives</h3>
+                        <ul class="list-disc list-inside space-y-2 text-lg text-gray-600">
+                            <li>Empower users through customized search tools</li>
+                            <li>Centralize access to community services</li>
+                            <li>Enhance visibility and reduce redundancy</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-indigo-600 mb-4">Our Team</h3>
+                        <p class="text-lg text-gray-600">Meet the people behind Link In Action: Jasman & Arfa.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="page-section py-16 sm:py-24">
+            <div class="container mx-auto px-6 max-w-2xl">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Contact Us</h2>
+                     <p class="mt-4 text-lg text-gray-600">If you have questions or need assistance, please reach out to us.</p>
+                </div>
+                <form action="mailto:linkinaction@gmail.com" method="post" enctype="text/plain" class="bg-white p-8 rounded-lg shadow-md space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                        <input type="text" id="name" name="name" required class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                     <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="email" name="email" required class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                     <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                        <textarea id="message" name="message" rows="5" required class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    </div>
+                    <div>
+                         <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Link in Action. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto py-8 px-6 text-center">
+            <p>&copy; 2025 Link in Action. All rights reserved.</p>
+        </div>
     </footer>
 
     <script>
-        function toggleMenu() {
-            const nav = document.getElementById('navbar');
-            nav.classList.toggle('active');
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.page-section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // --- Page Navigation Logic ---
+            function showSection(hash) {
+                // Default to #home if hash is empty or just '#'
+                const targetHash = (hash === '' || hash === '#') ? '#home' : hash;
+                
+                // Hide all sections
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // Show the target section
+                const targetSection = document.querySelector(targetHash);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+
+                // Update active state for nav links
+                navLinks.forEach(link => {
+                    // Use getAttribute to get the literal href value
+                    if (link.getAttribute('href') === targetHash) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+                
+                // Close mobile menu after navigation
+                mobileMenu.classList.add('hidden');
+                
+                // Scroll to top of the page
+                window.scrollTo(0, 0);
+            }
+
+            // --- Event Listeners ---
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetHash = this.getAttribute('href');
+                    // Update URL hash without jumping
+                    history.pushState(null, null, targetHash);
+                    showSection(targetHash);
+                });
+            });
+
+            // Handle browser back/forward buttons
+            window.addEventListener('popstate', function() {
+                showSection(window.location.hash);
+            });
+            
+            // Toggle mobile menu
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Show initial section based on URL hash
+            showSection(window.location.hash);
+        });
     </script>
 </body>
 </html>
