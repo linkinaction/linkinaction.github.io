@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting...</title>
+  <script type="text/javascript">
+    // Get the current path (e.g., /directory)
+    var path = window.location.pathname;
+    // Redirect to the root, appending the path as a hash.
+    // This makes GitHub Pages serve index.html, and our SPA's JS can then read the hash.
+    window.location.replace('/#' + path.substring(1));
+  </script>
+</head>
+<body>
+  If you are not redirected automatically, follow this <a href="/">link</a>.
+</body>
+</html>
