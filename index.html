@@ -41,20 +41,20 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 window.currentUserId = user.uid;
-                console.log("Authenticated user ID:", window.currentUserId);
+                console.log("Firebase Auth: Authenticated user ID:", window.currentUserId);
             } else {
                 try {
                     if (initialAuthToken) {
                         await signInWithCustomToken(auth, initialAuthToken);
                         window.currentUserId = auth.currentUser.uid;
-                        console.log("Signed in with custom token:", window.currentUserId);
+                        console.log("Firebase Auth: Signed in with custom token:", window.currentUserId);
                     } else {
                         await signInAnonymously(auth);
                         window.currentUserId = auth.currentUser.uid;
-                        console.log("Signed in anonymously:", window.currentUserId);
+                        console.log("Firebase Auth: Signed in anonymously:", window.currentUserId);
                     }
                 } catch (error) {
-                    console.error("Firebase authentication error:", error);
+                    console.error("Firebase Auth: Error during authentication:", error);
                 }
             }
             window.isAuthReady = true;
@@ -95,15 +95,15 @@
     <!-- Header -->
     <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="/" class="nav-link text-2xl font-bold text-gray-900">Link in Action</a>
+            <a href="#home" class="nav-link text-2xl font-bold text-gray-900">Link in Action</a>
 
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="/" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300 active">Home</a>
-                <a href="/directory" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Community Directory</a>
-                <a href="/join" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Join the Network</a>
-                <a href="/about" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">About</a>
-                <a href="/contact" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Contact</a>
+                <a href="#home" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300 active">Home</a>
+                <a href="#directory" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Community Directory</a>
+                <a href="#join" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Join the Network</a>
+                <a href="#about" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">About</a>
+                <a href="#contact" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Contact</a>
             </nav>
 
             <!-- Mobile Menu Button -->
@@ -116,11 +116,11 @@
 
         <!-- Mobile Navigation -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
-            <a href="/" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Home</a>
-            <a href="/directory" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Community Directory</a>
-            <a href="/join" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Join the Network</a>
-            <a href="/about" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">About</a>
-            <a href="/contact" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Contact</a>
+            <a href="#home" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Home</a>
+            <a href="#directory" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Community Directory</a>
+            <a href="#join" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Join the Network</a>
+            <a href="#about" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">About</a>
+            <a href="#contact" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Contact</a>
         </div>
     </header>
 
@@ -138,7 +138,7 @@
                 <div class="relative max-w-4xl mx-auto text-center py-24 px-6 sm:py-32 lg:py-48">
                     <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">Welcome to Link In Action</h1>
                     <p class="mt-6 text-xl text-indigo-100">Your Link to Calgary’s Community Resources</p>
-                    <a href="/directory" class="nav-link mt-8 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto transition-colors">
+                    <a href="#directory" class="nav-link mt-8 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto transition-colors">
                         Explore Community Resources
                     </a>
                 </div>
@@ -159,7 +159,7 @@
                     <p class="mt-4 text-lg text-gray-600">Find the resources you need, right in your community.</p>
                 </div>
 
-                <!-- Search Form (Placeholder - actual search would use backend) -->
+                <!-- Search Form -->
                 <div class="bg-gray-100 p-8 rounded-lg shadow-md mb-12">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
                         <input type="text" placeholder="Search by keyword" class="col-span-1 xl:col-span-2 w-full p-3 rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
@@ -307,7 +307,9 @@
 
             // --- Google Maps Initialization ---
             function loadGoogleMapsScript() {
+                console.log("Map: Attempting to load Google Maps script.");
                 if (document.getElementById('google-maps-script')) {
+                    console.log("Map: Google Maps script already present.");
                     return; // Script already loaded
                 }
                 const script = document.createElement('script');
@@ -316,13 +318,16 @@
                 script.async = true;
                 script.defer = true;
                 document.head.appendChild(script);
+                script.onload = () => console.log("Map: Google Maps script loaded successfully.");
+                script.onerror = () => console.error("Map: Failed to load Google Maps script.");
             }
 
             window.initMap = function() {
+                console.log("Map: initMap callback fired.");
                 // Check if the map container exists before initializing
                 const mapElement = document.getElementById('map');
                 if (!mapElement) {
-                    console.warn("Map element not found. Skipping map initialization.");
+                    console.warn("Map: Map element not found. Skipping map initialization.");
                     return;
                 }
 
@@ -333,6 +338,7 @@
                     zoom: 11,
                     mapId: 'DEMO_MAP_ID', // Use a demo map ID or create your own
                 });
+                console.log("Map: Google Map initialized.");
 
                 // Add some initial dummy markers
                 addMarker({ lat: 51.05, lng: -114.08 }, "Calgary Public Library - Central", "Offers various community programs.");
@@ -340,7 +346,15 @@
                 addMarker({ lat: 51.07, lng: -114.12 }, "Community Food Bank", "Food assistance programs.");
 
                 // Fetch resources from Firestore and add them as markers
-                fetchResourcesAndAddMarkers();
+                // Only fetch if Firebase is ready
+                if (window.isAuthReady && firebaseDb && currentUserId) {
+                    console.log("Map: Firebase ready, fetching resources for map markers.");
+                    fetchResourcesAndAddMarkers();
+                } else {
+                    console.log("Map: Firebase not ready yet, waiting for 'firebaseAuthReady' to fetch resources for map.");
+                    // If not ready, wait for auth event
+                    document.addEventListener('firebaseAuthReady', fetchResourcesAndAddMarkers);
+                }
             };
 
             function addMarker(location, title, description) {
@@ -358,100 +372,100 @@
                     infoWindow.open(map, marker);
                 });
                 markers.push(marker); // Store markers to clear them later if needed
+                console.log(`Map: Added marker for ${title}`);
             }
 
             // --- Page Navigation Logic ---
-            // Maps URL paths to section IDs
-            const pathToSectionIdMap = {
-                '/': '#home',
-                '/directory': '#directory',
-                '/join': '#join',
-                '/about': '#about',
-                '/contact': '#contact'
-            };
-
-            function showSection(path) {
-                const sectionId = pathToSectionIdMap[path];
-
-                if (!sectionId) {
-                    console.warn(`No section found for path: ${path}. Defaulting to home.`);
-                    history.replaceState(null, null, '/');
-                    showSection('/'); // Recurse to show home
-                    return;
-                }
-
+            function showSection(hash) {
+                // Default to #home if hash is empty or just '#'
+                const targetHash = (hash === '' || hash === '#') ? '#home' : hash;
+                console.log(`Navigation: Attempting to show section for hash: "${targetHash}"`);
+                
+                // Hide all sections
                 sections.forEach(section => {
                     section.classList.remove('active');
                 });
 
-                const targetSection = document.querySelector(sectionId);
+                // Show the target section
+                const targetSection = document.querySelector(targetHash);
                 if (targetSection) {
                     targetSection.classList.add('active');
+                    console.log(`Navigation: Section "${targetHash}" activated.`);
                 } else {
-                    console.error(`Target section element not found for ID: ${sectionId}`);
+                    console.error(`Navigation: Target section element not found for ID: ${targetHash}`);
                 }
 
-                // Update active state for nav links based on the current path
+                // Update active state for nav links
                 navLinks.forEach(link => {
-                    const linkPath = link.getAttribute('href');
-                    if (linkPath === path) {
+                    // Use getAttribute to get the literal href value
+                    if (link.getAttribute('href') === targetHash) {
                         link.classList.add('active');
+                        console.log(`Navigation: Nav link for "${targetHash}" set to active.`);
                     } else {
                         link.classList.remove('active');
                     }
                 });
-
+                
+                // Close mobile menu after navigation
                 mobileMenu.classList.add('hidden');
+                
+                // Scroll to top of the page
                 window.scrollTo(0, 0);
 
-                // Initialize map if on directory section
-                if (sectionId === '#directory' && typeof google !== 'undefined' && typeof google.maps !== 'undefined' && !map) {
+                // Initialize map if on directory section and map is not yet initialized
+                if (targetHash === '#directory' && typeof google !== 'undefined' && typeof google.maps !== 'undefined' && !map) {
+                    console.log("Map: Directory section active, initializing map.");
                     initMap();
-                } else if (sectionId === '#directory' && map) {
+                } else if (targetHash === '#directory' && map) {
+                    console.log("Map: Directory section active, map already initialized. Resizing and recentering.");
+                    // If map already initialized, just ensure it's displayed and recentered
                     google.maps.event.trigger(map, 'resize');
                     map.setCenter(map.getCenter());
                 }
             }
 
             // --- Firebase Firestore (Community Directory) ---
+            // This listener primarily ensures firebaseDb and currentUserId are set.
+            // Map loading is now handled more directly by showSection and initMap.
             document.addEventListener('firebaseAuthReady', () => {
                 firebaseDb = window.firebaseDb;
                 currentUserId = window.currentUserId;
+                console.log("Firebase Auth: Ready. User ID:", currentUserId);
 
-                // Load Google Maps script once Firebase is ready and if on directory section
-                if (document.querySelector('#directory').classList.contains('active')) {
-                    loadGoogleMapsScript();
+                // If map is already initialized and we are on directory, fetch resources.
+                // This handles cases where auth becomes ready *after* directory is shown.
+                if (map && document.querySelector('#directory').classList.contains('active')) {
+                    console.log("Firebase: Map active on directory, fetching resources (after auth ready).");
+                    fetchResourcesAndAddMarkers();
                 }
             });
 
             // Fetch and display resources in real-time
             function fetchResourcesAndAddMarkers() {
-                // The resources list div is hidden by CSS, so no need to update its innerHTML directly for display.
-                // We still need to fetch data to populate the map markers.
+                console.log("Firestore: Attempting to fetch resources for map markers.");
                 const resourcesListDiv = document.getElementById('resources-list'); // Still reference for error logging
 
                 if (!firebaseDb || !currentUserId) {
-                    // This message will only show if Firebase isn't ready or user isn't authenticated
-                    // (though the div is hidden, this logic remains for potential future visibility)
-                    console.warn("Firebase not ready or user not authenticated for fetching resources.");
-                    document.addEventListener('firebaseAuthReady', fetchResourcesAndAddMarkers);
-                    return;
+                    console.warn("Firestore: DB or User ID not available for fetching resources. This should be handled by firebaseAuthReady listener.");
+                    return; // Will be retried when firebaseAuthReady fires
                 }
 
                 // Query the PUBLIC collection for community resources
                 const q = query(collection(firebaseDb, `artifacts/${window.appId}/public/data/community_resources`));
 
                 onSnapshot(q, (snapshot) => {
+                    console.log("Firestore: Received snapshot update.");
                     markers.forEach(marker => marker.setMap(null)); // Clear existing map markers
                     markers = []; // Reset markers array
 
                     if (snapshot.empty) {
-                        console.log("No community resources found in Firestore (public collection).");
+                        console.log("Firestore: No community resources found in Firestore (public collection).");
                         return;
                     }
 
                     snapshot.forEach((doc) => {
                         const resource = doc.data();
+                        console.log("Firestore: Processing resource:", resource.name);
                         // Add marker to map (using dummy coordinates for now, ideally geocode address)
                         if (map) {
                             const latOffset = (Math.random() - 0.5) * 0.05; // +/- 0.025 degrees
@@ -459,10 +473,12 @@
                             const dummyLat = 51.0447 + latOffset;
                             const dummyLng = -114.0719 + lngOffset;
                             addMarker({ lat: dummyLat, lng: dummyLng }, resource.name, resource.description);
+                        } else {
+                            console.warn(`Firestore: Map not initialized when trying to add marker for ${resource.name}.`);
                         }
                     });
                 }, (error) => {
-                    console.error("Error fetching documents from Firestore: ", error);
+                    console.error("Firestore: Error fetching documents from Firestore: ", error);
                     // Log the error, but don't display it to the user as the list is hidden
                 });
             }
@@ -474,6 +490,7 @@
             if (contactForm) {
                 contactForm.addEventListener('submit', async function(e) {
                     e.preventDefault(); // Prevent default form submission
+                    console.log("Contact Form: Submission initiated.");
 
                     const name = document.getElementById('contact-name').value;
                     const email = document.getElementById('contact-email').value;
@@ -485,38 +502,16 @@
                     contactFormMessage.classList.add('text-gray-600');
 
                     try {
-                        // In a real application, you would send this data to a backend server
-                        // that handles email sending (e.g., using Node.js with Nodemailer, SendGrid, Mailgun).
-                        // Example of what a fetch request *would* look like:
-                        /*
-                        const response = await fetch('/api/send-email', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ name, email, message }),
-                        });
-
-                        if (response.ok) {
-                            contactFormMessage.textContent = "Message sent successfully! We'll get back to you soon.";
-                            contactFormMessage.classList.remove('text-gray-600');
-                            contactFormMessage.classList.add('text-green-500');
-                            contactForm.reset();
-                        } else {
-                            const errorData = await response.json();
-                            throw new Error(errorData.message || 'Failed to send message.');
-                        }
-                        */
-
                         // For this demo, we'll just simulate a delay and success
                         await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
                         contactFormMessage.textContent = "Message sent successfully! (Simulated)";
                         contactFormMessage.classList.remove('text-gray-600');
                         contactFormMessage.classList.add('text-green-500');
                         contactForm.reset();
+                        console.log("Contact Form: Message sent (simulated) successfully.");
 
                     } catch (error) {
-                        console.error("Contact form submission error:", error);
+                        console.error("Contact Form: Submission error:", error);
                         contactFormMessage.textContent = `Failed to send message: ${error.message || 'Please try again.'}`;
                         contactFormMessage.classList.remove('text-gray-600', 'text-green-500');
                         contactFormMessage.classList.add('text-red-500');
@@ -528,37 +523,35 @@
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const targetPath = link.getAttribute('href'); // e.g., '/', '/directory'
-                    history.pushState(null, null, targetPath);
-                    showSection(targetPath);
+                    const targetHash = this.getAttribute('href'); // e.g., '#home', '#directory'
+                    console.log(`Nav Click: User clicked link to: "${targetHash}"`);
+                    // Update URL hash without jumping
+                    history.pushState(null, null, targetHash);
+                    showSection(targetHash);
                 });
             });
 
+            // Handle browser back/forward buttons
             window.addEventListener('popstate', function() {
-                // When back/forward, determine which section to show based on current pathname
-                const currentPath = window.location.pathname;
-                showSection(currentPath);
+                // For popstate, use window.location.hash directly
+                const currentHash = window.location.hash;
+                console.log(`Popstate: URL hash changed to: "${currentHash}"`);
+                showSection(currentHash);
             });
-
+            
             // Toggle mobile menu
             mobileMenuButton.addEventListener('click', function() {
                 mobileMenu.classList.toggle('hidden');
+                console.log("Mobile Menu: Toggled visibility.");
             });
 
-            // --- Initial page load handling ---
-            // This handles both direct access (e.g., /directory) and the 404.html redirect trick
-            let initialPath = window.location.pathname;
-            let initialHash = window.location.hash;
+            // Show initial section based on URL hash
+            const initialHash = window.location.hash;
+            console.log(`Initial Load: Current hash is "${initialHash}".`);
+            showSection(initialHash);
 
-            if (initialHash.startsWith('#/')) {
-                // This means 404.html redirected us here (e.g., /#/directory)
-                const cleanPathFromHash = initialHash.substring(1); // Removes the first '#' -> /directory
-                history.replaceState(null, null, cleanPathFromHash); // Cleans up the URL to /directory
-                showSection(cleanPathFromHash);
-            } else {
-                // Standard initial load (e.g., / or /directory if server handles it directly)
-                showSection(initialPath);
-            }
+            // Load Google Maps script early, it will call initMap when ready
+            loadGoogleMapsScript();
         });
     </script>
 </body>
