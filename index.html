@@ -574,7 +574,21 @@
 
             // Load Google Maps script early, it will call initMap when ready
             loadGoogleMapsScript();
+        // --- Clear Thank-You Message When Leaving Contact ---
+        function clearContactMessage() {
+            const msgEl = document.getElementById('contact-form-message');
+            if (!msgEl) return;
+            if (location.hash !== '#contact') {
+                msgEl.textContent = '';
+                msgEl.className = 'mt-4 text-center';
+            }
+        }
+        window.addEventListener('hashchange', clearContactMessage);
+        window.addEventListener('popstate', clearContactMessage);
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', clearContactMessage);
         });
+    });
     </script>
 </body>
 </html>
