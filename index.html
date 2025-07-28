@@ -507,42 +507,6 @@
                 });
             }
 
-            // --- Contact Form Submission ---
-            const contactForm = document.getElementById('contact-form');
-            const contactFormMessage = document.getElementById('contact-form-message');
-
-            if (contactForm) {
-                contactForm.addEventListener('submit', async function(e) {
-                    e.preventDefault(); // Prevent default form submission
-                    console.log("Contact Form: Submission initiated.");
-
-                    const name = document.getElementById('contact-name').value;
-                    const email = document.getElementById('contact-email').value;
-                    const message = document.getElementById('contact-message').value;
-
-                    // Simulate sending email
-                    contactFormMessage.textContent = "Sending your message...";
-                    contactFormMessage.classList.remove('text-red-500', 'text-green-500');
-                    contactFormMessage.classList.add('text-gray-600');
-
-                    try {
-                        // For this demo, we'll just simulate a delay and success
-                        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
-                        contactFormMessage.textContent = "Message sent successfully! (Simulated)";
-                        contactFormMessage.classList.remove('text-gray-600');
-                        contactFormMessage.classList.add('text-green-500');
-                        contactForm.reset();
-                        console.log("Contact Form: Message sent (simulated) successfully.");
-
-                    } catch (error) {
-                        console.error("Contact Form: Submission error:", error);
-                        contactFormMessage.textContent = `Failed to send message: ${error.message || 'Please try again.'}`;
-                        contactFormMessage.classList.remove('text-gray-600', 'text-green-500');
-                        contactFormMessage.classList.add('text-red-500');
-                    }
-                });
-            }
-
             // --- Event Listeners for Navigation ---
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
