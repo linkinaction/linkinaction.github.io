@@ -1,558 +1,422 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link in Action - Your Link to Calgary’s Community Resources</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Link in Action - Your Link to Calgary’s Community Resources</title>
 
-    <!-- Tailwind CSS for modern, responsive styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Favicon -->
+  <link rel="icon" href="./images/logo.png" type="image/png">
 
-    <!-- Google Fonts for professional typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS for modern, responsive styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Firebase SDKs -->
-    <script type="module">
-        // Import the functions you need from the Firebase SDKs
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+  <!-- Google Fonts for professional typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        // Global variables for Firebase (provided by the environment)
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? initialAuthToken : null;
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? initialAuthToken : null;
 
-        // Global variables to be used in the main script
-        window.firebaseApp = app;
-        window.firebaseAuth = auth;
-        window.firebaseDb = db;
-        window.currentUserId = null; // Still useful for auth status, even if not used for collection path directly
-        window.isAuthReady = false;
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        // Authenticate user
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                window.currentUserId = user.uid;
-                console.log("Firebase Auth: Authenticated user ID:", window.currentUserId);
-            } else {
-                try {
-                    if (initialAuthToken) {
-                        await signInWithCustomToken(auth, initialAuthToken);
-                        window.currentUserId = auth.currentUser.uid;
-                        console.log("Firebase Auth: Signed in with custom token:", window.currentUserId);
-                    } else {
-                        await signInAnonymously(auth);
-                        window.currentUserId = auth.currentUser.uid;
-                        console.log("Firebase Auth: Signed in anonymously:", window.currentUserId);
-                    }
-                } catch (error) {
-                    console.error("Firebase Auth: Error during authentication:", error);
-                }
-            }
-            window.isAuthReady = true;
-            // Dispatch a custom event once auth is ready
-            document.dispatchEvent(new CustomEvent('firebaseAuthReady'));
-        });
-    </script>
+    window.firebaseApp = app;
+    window.firebaseAuth = auth;
+    window.firebaseDb = db;
+    window.currentUserId = null;
+    window.isAuthReady = false;
 
-    <style>
-        /* Custom styles to complement Tailwind */
-        body {
-            font-family: 'Inter', sans-serif;
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        window.currentUserId = user.uid;
+      } else {
+        try {
+          if (initialAuthToken) {
+            await signInWithCustomToken(auth, initialAuthToken);
+            window.currentUserId = auth.currentUser.uid;
+          } else {
+            await signInAnonymously(auth);
+            window.currentUserId = auth.currentUser.uid;
+          }
+        } catch (error) {
+          console.error("Auth error:", error);
         }
-        /* Style for the active navigation link */
-        .nav-link.active {
-            color: #4f46e5; /* Indigo 600 */
-            font-weight: 600;
-        }
-        /* Hide sections by default */
-        .page-section {
-            display: none;
-        }
-        /* Show the active section */
-        .page-section.active {
-            display: block;
-        }
-        /* Custom styling for map container */
-        #map {
-            height: 450px; /* Increased height for better visibility */
-            width: 100%;
-            border-radius: 0.5rem; /* rounded-lg */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
-        }
-    </style>
+      }
+      window.isAuthReady = true;
+      document.dispatchEvent(new CustomEvent('firebaseAuthReady'));
+    });
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .nav-link.active {
+      color: #dc2626; /* Tailwind red-600 */
+      font-weight: 600;
+    }
+    .page-section {
+      display: none;
+    }
+    .page-section.active {
+      display: block;
+    }
+    #map {
+      height: 450px;
+      width: 100%;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1),
+                  0 2px 4px -1px rgba(0,0,0,0.06);
+    }
+  </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#home" class="nav-link text-2xl font-bold text-gray-900">Link in Action</a>
+  <!-- Header -->
+  <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+    <div class="container mx-auto px-6 py-4 flex items-center">
 
-            <!-- Desktop Navigation -->
-            <nav class="hidden md:flex items-center space-x-8">
-                <a href="#home" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300 active">Home</a>
-                <a href="#directory" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Community Directory</a>
-                <a href="#join" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Join the Network</a>
-                <a href="#about" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">About</a>
-                <a href="#contact" class="nav-link text-gray-600 hover:text-indigo-600 transition-colors duration-300">Contact</a>
-            </nav>
+      <!-- Logo at top-left -->
+      <a href="#home" class="flex items-center">
+        <img src="./images/logo.png"
+             alt="Link In Action Logo"
+             class="h-10 w-auto">
+      </a>
 
-            <!-- Mobile Menu Button -->
-            <div class="md:hidden">
-                <button id="mobile-menu-button" class="text-gray-900 focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </div>
+      <!-- Desktop Navigation -->
+      <nav class="ml-auto hidden md:flex items-center space-x-8">
+        <a href="#home"      class="nav-link text-gray-600 hover:text-red-600 transition active">Home</a>
+        <a href="#directory" class="nav-link text-gray-600 hover:text-red-600 transition">Community Directory</a>
+        <a href="#join"      class="nav-link text-gray-600 hover:text-red-600 transition">Join the Network</a>
+        <a href="#about"     class="nav-link text-gray-600 hover:text-red-600 transition">About</a>
+        <a href="#contact"   class="nav-link text-gray-600 hover:text-red-600 transition">Contact</a>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden ml-auto">
+        <button id="mobile-menu-button" class="text-gray-900 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h16M4 12h16m-7 6h7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+      <a href="#home"      class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Home</a>
+      <a href="#directory" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Community Directory</a>
+      <a href="#join"      class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Join the Network</a>
+      <a href="#about"     class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">About</a>
+      <a href="#contact"   class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Contact</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Home Section -->
+    <section id="home" class="page-section active">
+      <div class="relative bg-red-700">
+        <div class="absolute inset-0">
+          <img class="w-full h-full object-cover"
+               src="./images/hero.jpg"
+               alt="Calgary skyline at dusk"
+               onerror="this.onerror=null;this.src='https://placehold.co/1600x900/b91c1c/ffffff?text=Calgary+Skyline';">
+          <div class="absolute inset-0 bg-red-600 opacity-70 mix-blend-multiply" aria-hidden="true"></div>
         </div>
-
-        <!-- Mobile Navigation -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
-            <a href="#home" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Home</a>
-            <a href="#directory" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Community Directory</a>
-            <a href="#join" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Join the Network</a>
-            <a href="#about" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">About</a>
-            <a href="#contact" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Contact</a>
+        <div class="relative max-w-4xl mx-auto text-center py-24 px-6 sm:py-32 lg:py-48">
+          <h1 class="text-4xl font-extrabold text-white sm:text-5xl lg:text-6xl">
+            Welcome to Link In Action
+          </h1>
+          <p class="mt-6 text-xl text-red-100">
+            Your Link to Calgary’s Community Resources
+          </p>
+          <a href="#directory"
+             class="mt-8 inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-red-600 bg-white hover:bg-red-50 transition-colors">
+            Explore Community Resources
+          </a>
         </div>
-    </header>
-
-    <!-- Main Content Area -->
-    <main>
-        <!-- Home Section -->
-        <section id="home" class="page-section active">
-            <div class="relative bg-indigo-700">
-                <div class="absolute inset-0">
-                    <!-- Updated hero image source -->
-                    <img class="w-full h-full object-cover" src="./images/hero.jpg" alt="Calgary skyline with a modern bridge at dusk" onerror="this.onerror=null;this.src='https://placehold.co/1600x900/312e81/ffffff?text=Calgary+Skyline+Fallback';">
-                    <!-- Adjusted overlay color for lighter tint -->
-                    <div class="absolute inset-0 bg-indigo-600 opacity-70 mix-blend-multiply" aria-hidden="true"></div>
-                </div>
-                <div class="relative max-w-4xl mx-auto text-center py-24 px-6 sm:py-32 lg:py-48">
-                    <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">Welcome to Link In Action</h1>
-                    <p class="mt-6 text-xl text-indigo-100">Your Link to Calgary’s Community Resources</p>
-                    <a href="#directory" class="nav-link mt-8 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto transition-colors">
-                        Explore Community Resources
-                    </a>
-                </div>
-            </div>
-             <div class="bg-white">
-                <div class="max-w-4xl mx-auto py-16 px-6 sm:py-24 lg:px-8 text-center">
-                    <h2 class="text-3xl font-extrabold text-gray-900">Link In Action</h2>
-                    <p class="mt-4 text-lg text-gray-600">Calgary’s centralized platform for discovering community programs and services. Whether you’re new to the city or seeking support, we make it easy to find the right programs for your needs. With many organizations providing similar services and important resources often hard to find, Link In Action brings clarity, access, and connection to the forefront of community support.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Community Directory Section -->
-        <section id="directory" class="page-section py-16 sm:py-24 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Community Directory</h2>
-                    <p class="mt-4 text-lg text-gray-600">Find the resources you need, right in your community.</p>
-                </div>
-
-                <!-- Search Form -->
-                <div class="bg-gray-100 p-8 rounded-lg shadow-md mb-12">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
-                        <input type="text" placeholder="Search by keyword" class="col-span-1 xl:col-span-2 w-full p-3 rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
-                        <select class="w-full p-3 rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
-                            <option>Program Type</option><option>Legal Aid</option><option>Housing</option><option>Language Classes</option>
-                        </select>
-                        <select class="w-full p-3 rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
-                            <option>Location</option><option>NE</option><option>NW</option><option>SE</option><option>SW</option>
-                        </select>
-                        <select class="w-full p-3 rounded-md border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
-                            <option>Price</option><option>Free</option><option>Low Cost</option><option>Paid</option>
-                        </select>
-                        <button class="w-full bg-indigo-600 text-white p-3 rounded-md font-semibold hover:bg-indigo-700 transition-colors">Search</button>
-                    </div>
-                </div>
-
-                <!-- Google Map -->
-                <div id="map" class="bg-gray-200 rounded-lg shadow-md mb-12"></div>
-
-                <!-- Community Resources List (from Firestore) - Hidden, but still updates data -->
-                <div id="resources-list" class="hidden">
-                    <!-- Resources will be loaded here dynamically, but not displayed -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Join the Network Section -->
-        <section id="join" class="page-section py-16 sm:py-24">
-            <div class="container mx-auto px-6">
-                 <div class="text-center mb-12">
-                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Join the Network</h2>
-                    <p class="mt-4 text-lg text-gray-600">Get involved and make a difference in our community.</p>
-                </div>
-                <div class="grid md:grid-cols-3 gap-8 text-center">
-                    <div class="bg-white p-8 rounded-lg shadow-md">
-                        <h3 class="text-xl font-bold mb-2">Volunteer Opportunities</h3>
-                        <p class="text-gray-600">Organizations may list volunteer opportunities here. (Pending consent)</p>
-                    </div>
-                    <div class="bg-white p-8 rounded-lg shadow-md">
-                        <h3 class="text-xl font-bold mb-2">Calls to Action</h3>
-                        <p class="text-gray-600">Community members and organizations can respond to posted calls to action.</p>
-                    </div>
-                    <div class="bg-white p-8 rounded-lg shadow-md">
-                        <h3 class="text-xl font-bold mb-2">Research Posters</h3>
-                        <p class="text-gray-600">Posters targeting immigrants or newcomers can be listed here.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="page-section py-16 sm:py-24 bg-white">
-            <div class="container mx-auto px-6 max-w-4xl">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">About Us</h2>
-                </div>
-                <div class="space-y-12">
-                    <div>
-                        <h3 class="text-2xl font-bold text-indigo-600 mb-4">Our Mission</h3>
-                        <p class="text-lg text-gray-600">Link In Action was developed to enhance access to community services by providing a centralized, user-friendly digital platform that connects individuals with local organizations and programs in Calgary. Our mission is to bridge service gaps, promote inclusion, and empower individuals through streamlined access to vital resources.</p>
-                    </div>
-                     <div>
-                        <h3 class="text-2xl font-bold text-indigo-600 mb-4">Our Objectives</h3>
-                        <ul class="list-disc list-inside space-y-2 text-lg text-gray-600">
-                            <li>Empower users through customized search tools</li>
-                            <li>Centralize access to community services</li>
-                            <li>Enhance visibility and reduce redundancy</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold text-indigo-600 mb-4">Our Team</h3>
-                        <p class="text-lg text-gray-600">Meet the people behind Link In Action: Jasman & Arfa.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="page-section py-16 sm:py-24">
-            <div class="container mx-auto px-6 max-w-2xl">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Contact Us</h2>
-                     <p class="mt-4 text-lg text-gray-600">If you have questions or need assistance, please reach out to us.</p>
-                </div>
-                <form id="contact-form" class="bg-white p-8 rounded-lg shadow-md space-y-6">
-                    <div>
-                        <label for="contact-name" class="block text-sm font-medium text-gray-700">Name</label>
-                        <input type="text" id="contact-name" name="name" required class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                     <div>
-                        <label for="contact-email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" id="contact-email" name="email" required class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                     <div>
-                        <label for="contact-message" class="block text-sm font-medium text-gray-700">Message</label>
-                        <textarea id="contact-message" name="message" rows="5" required class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-                    </div>
-                    <div>
-                         <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-                            Send Message
-                        </button>
-                        <div id="contact-form-message" class="mt-4 text-center text-sm"></div>
-                    </div>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white"> <!-- Changed to bg-gray-900 to match icon backgrounds -->
-        <div class="container mx-auto py-8 px-6 text-center">
-            <div class="flex justify-center space-x-6">
-                <!-- LinkedIn Image Icon -->
-                <a href="https://www.linkedin.com/company/linkinaction" target="_blank" aria-label="LinkedIn" class="text-white hover:opacity-75 transition-opacity">
-                    <img src="./images/linkedin.jpg" alt="LinkedIn Logo" class="w-7 h-7" onerror="this.onerror=null;this.src='https://placehold.co/28x28/0A66C2/ffffff?text=LI'; console.error('LinkedIn icon failed to load');">
-                </a>
-                <!-- Instagram Image Icon -->
-                <a href="https://www.instagram.com/linkinaction" target="_blank" aria-label="Instagram" class="text-white hover:opacity-75 transition-opacity">
-                    <img src="./images/instagram.jpg" alt="Instagram Logo" class="w-7 h-7" onerror="this.onerror=null;this.src='https://placehold.co/28x28/E1306C/ffffff?text=IG'; console.error('Instagram icon failed to load');">
-                </a>
-                <!-- Email Image Icon -->
-                <a href="mailto:linkinaction@gmail.com" aria-label="Email" class="text-white hover:opacity-75 transition-opacity">
-                    <img src="./images/email.jpg" alt="Email Icon" class="w-7 h-7" onerror="this.onerror=null;this.src='https://placehold.co/28x28/D44638/ffffff?text=Email'; console.error('Email icon failed to load');">
-                </a>
-            </div>
+      </div>
+      <div class="bg-white">
+        <div class="max-w-4xl mx-auto py-16 px-6 sm:py-24 lg:px-8 text-center">
+          <h2 class="text-3xl font-extrabold text-gray-900">Link In Action</h2>
+          <p class="mt-4 text-lg text-gray-600">
+            Calgary’s centralized platform for discovering community programs and services...
+          </p>
         </div>
-    </footer>
+      </div>
+    </section>
 
-    <script>
-        // Google Maps API Key (replace with your actual key in a production environment)
-        // For this demonstration, we'll load the script without a key, which might show warnings
-        // or have limited functionality outside of development environments.
-        const GOOGLE_MAPS_API_KEY = ''; // Leave empty for local testing or add your key
+    <!-- Community Directory Section -->
+    <section id="directory" class="page-section py-16 sm:py-24 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Community Directory</h2>
+          <p class="mt-4 text-lg text-gray-600">Find the resources you need, right in your community.</p>
+        </div>
+        <div class="bg-gray-100 p-8 rounded-lg shadow-md mb-12">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+            <input type="text" placeholder="Search by keyword"
+                   class="col-span-1 xl:col-span-2 w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500">
+            <select class="w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500">
+              <option>Program Type</option>
+              <option>Legal Aid</option>
+              <option>Housing</option>
+              <option>Language Classes</option>
+            </select>
+            <select class="w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500">
+              <option>Location</option>
+              <option>NE</option>
+              <option>NW</option>
+              <option>SE</option>
+              <option>SW</option>
+            </select>
+            <select class="w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500">
+              <option>Price</option>
+              <option>Free</option>
+              <option>Low Cost</option>
+              <option>Paid</option>
+            </select>
+            <button class="w-full bg-red-600 text-white p-3 rounded-md font-semibold hover:bg-red-700 transition-colors">
+              Search
+            </button>
+          </div>
+        </div>
+        <div id="map" class="bg-gray-200 rounded-lg shadow-md mb-12"></div>
+        <div id="resources-list" class="hidden"></div>
+      </div>
+    </section>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const sections = document.querySelectorAll('.page-section');
-            const navLinks = document.querySelectorAll('.nav-link');
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
+    <!-- Join the Network Section -->
+    <section id="join" class="page-section py-16 sm:py-24">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Join the Network</h2>
+          <p class="mt-4 text-lg text-gray-600">Get involved and make a difference in our community.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8 text-center">
+          <div class="bg-white p-8 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-2">Volunteer Opportunities</h3>
+            <p class="text-gray-600">Organizations may list volunteer opportunities here.</p>
+          </div>
+          <div class="bg-white p-8 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-2">Calls to Action</h3>
+            <p class="text-gray-600">Community members can respond to calls to action.</p>
+          </div>
+          <div class="bg-white p-8 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-2">Research Posters</h3>
+            <p class="text-gray-600">Posters targeting newcomers can be listed here.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            let map;
-            let markers = [];
-            let firebaseDb; // Firestore instance
-            let currentUserId; // User ID from Firebase Auth
+    <!-- About Section -->
+    <section id="about" class="page-section py-16 sm:py-24 bg-white">
+      <div class="container mx-auto px-6 max-w-4xl">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">About Us</h2>
+        </div>
+        <div class="space-y-12">
+          <div>
+            <h3 class="text-2xl font-bold text-red-600 mb-4">Our Mission</h3>
+            <p class="text-lg text-gray-600">Link In Action was developed to enhance access to community services...</p>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-red-600 mb-4">Our Objectives</h3>
+            <ul class="list-disc list-inside space-y-2 text-lg text-gray-600">
+              <li>Empower users through customized search tools</li>
+              <li>Centralize access to community services</li>
+              <li>Enhance visibility and reduce redundancy</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-red-600 mb-4">Our Team</h3>
+            <p class="text-lg text-gray-600">Meet the people behind Link In Action: Jasman &amp; Arfa.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            // --- Google Maps Initialization ---
-            function loadGoogleMapsScript() {
-                console.log("Map: Attempting to load Google Maps script.");
-                if (document.getElementById('google-maps-script')) {
-                    console.log("Map: Google Maps script already present.");
-                    return; // Script already loaded
-                }
-                const script = document.createElement('script');
-                script.id = 'google-maps-script';
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=initMap`;
-                script.async = true;
-                script.defer = true;
-                document.head.appendChild(script);
-                script.onload = () => console.log("Map: Google Maps script loaded successfully.");
-                script.onerror = () => console.error("Map: Failed to load Google Maps script.");
-            }
+    <!-- Contact Section -->
+    <section id="contact" class="page-section py-16 sm:py-24">
+      <div class="container mx-auto px-6 max-w-2xl">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Contact Us</h2>
+          <p class="mt-4 text-lg text-gray-600">If you have questions or need assistance, please reach out.</p>
+        </div>
+        <form id="contact-form" class="bg-white p-8 rounded-lg shadow-md space-y-6">
+          <div>
+            <label for="contact-name" class="block text-sm font-medium text-gray-700">Name</label>
+            <input type="text" id="contact-name" name="name" required
+                   class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:ring-red-500 focus:border-red-500">
+          </div>
+          <div>
+            <label for="contact-email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" id="contact-email" name="email" required
+                   class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:ring-red-500 focus:border-red-500">
+          </div>
+          <div>
+            <label for="contact-message" class="block text-sm font-medium text-gray-700">Message</label>
+            <textarea id="contact-message" name="message" rows="5" required
+                      class="mt-1 block w-full p-3 rounded-md border-gray-300 shadow-sm focus:ring-red-500 focus:border-red-500"></textarea>
+          </div>
+          <div>
+            <button type="submit"
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
+              Send Message
+            </button>
+            <div id="contact-form-message" class="mt-4 text-center text-sm"></div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
 
-            window.initMap = function() {
-                console.log("Map: initMap callback fired.");
-                // Check if the map container exists before initializing
-                const mapElement = document.getElementById('map');
-                if (!mapElement) {
-                    console.warn("Map: Map element not found. Skipping map initialization.");
-                    return;
-                }
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white">
+    <div class="container mx-auto py-8 px-6 text-center">
+      <div class="flex justify-center space-x-6">
+        <a href="https://www.linkedin.com/company/linkinaction" target="_blank" aria-label="LinkedIn">
+          <img src="./images/linkedin.jpg" alt="LinkedIn Logo" class="w-7 h-7">
+        </a>
+        <a href="https://www.instagram.com/linkinaction" target="_blank" aria-label="Instagram">
+          <img src="./images/instagram.jpg" alt="Instagram Logo" class="w-7 h-7">
+        </a>
+        <a href="mailto:linkinaction@gmail.com" aria-label="Email">
+          <img src="./images/email.jpg" alt="Email Icon" class="w-7 h-7">
+        </a>
+      </div>
+    </div>
+  </footer>
 
-                // Calgary coordinates
-                const calgary = { lat: 51.0447, lng: -114.0719 };
-                map = new google.maps.Map(mapElement, {
-                    center: calgary,
-                    zoom: 11,
-                    mapId: 'DEMO_MAP_ID', // Use a demo map ID or create your own
-                });
-                console.log("Map: Google Map initialized.");
+  <script>
+    const GOOGLE_MAPS_API_KEY = 'AIzaSyBTO9piU4s9LVGYvob043hACb2S2hg7CMU';
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('.page-section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      let map, markers = [], firebaseDb, currentUserId;
 
-                // Add some initial dummy markers
-                addMarker({ lat: 51.05, lng: -114.08 }, "Calgary Public Library - Central", "Offers various community programs.");
-                addMarker({ lat: 51.03, lng: -114.05 }, "Calgary Immigrant Aid Society", "Provides settlement services.");
-                addMarker({ lat: 51.07, lng: -114.12 }, "Community Food Bank", "Food assistance programs.");
+      function loadGoogleMapsScript() {
+        if (document.getElementById('google-maps-script')) return;
+        const script = document.createElement('script');
+        script.id = 'google-maps-script';
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=initMap`;
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+      }
 
-                // Fetch resources from Firestore and add them as markers
-                // Only fetch if Firebase is ready
-                if (window.isAuthReady && firebaseDb && currentUserId) {
-                    console.log("Map: Firebase ready, fetching resources for map markers.");
-                    fetchResourcesAndAddMarkers();
-                } else {
-                    console.log("Map: Firebase not ready yet, waiting for 'firebaseAuthReady' to fetch resources for map.");
-                    // If not ready, wait for auth event
-                    document.addEventListener('firebaseAuthReady', fetchResourcesAndAddMarkers);
-                }
-            };
+      window.initMap = function() {
+        const mapEl = document.getElementById('map');
+        if (!mapEl) return;
+        const calgary = { lat: 51.0447, lng: -114.0719 };
+        map = new google.maps.Map(mapEl, { center: calgary, zoom: 11, mapId: 'DEMO_MAP_ID' });
+        addMarker({ lat: 51.05, lng: -114.08 }, "Calgary Public Library - Central", "Offers community programs.");
+        addMarker({ lat: 51.03, lng: -114.05 }, "Calgary Immigrant Aid Society", "Provides settlement services.");
+        addMarker({ lat: 51.07, lng: -114.12 }, "Community Food Bank", "Food assistance programs.");
+        if (window.isAuthReady && firebaseDb && currentUserId) {
+          fetchResourcesAndAddMarkers();
+        } else {
+          document.addEventListener('firebaseAuthReady', fetchResourcesAndAddMarkers);
+        }
+      };
 
-            function addMarker(location, title, description) {
-                const marker = new google.maps.Marker({
-                    position: location,
-                    map: map,
-                    title: title,
-                });
+      function addMarker(loc, title, desc) {
+        const marker = new google.maps.Marker({ position: loc, map, title });
+        const info = new google.maps.InfoWindow({ content: `<strong>${title}</strong><br>${desc}` });
+        marker.addListener('click', () => info.open(map, marker));
+        markers.push(marker);
+      }
 
-                const infoWindow = new google.maps.InfoWindow({
-                    content: `<strong>${title}</strong><br>${description}`
-                });
+      document.addEventListener('firebaseAuthReady', () => {
+        firebaseDb = window.firebaseDb;
+        currentUserId = window.currentUserId;
+        if (map && document.querySelector('#directory').classList.contains('active')) {
+          fetchResourcesAndAddMarkers();
+        }
+      });
 
-                marker.addListener('click', () => {
-                    infoWindow.open(map, marker);
-                });
-                markers.push(marker); // Store markers to clear them later if needed
-                console.log(`Map: Added marker for ${title}`);
-            }
+      function fetchResourcesAndAddMarkers() {
+        const q = query(collection(firebaseDb, `artifacts/${window.appId}/public/data/community_resources`));
+        onSnapshot(q, snapshot => {
+          markers.forEach(m => m.setMap(null));
+          markers = [];
+          if (snapshot.empty) return;
+          snapshot.forEach(doc => {
+            const r = doc.data();
+            const latOffset = (Math.random() - 0.5) * 0.05;
+            const lngOffset = (Math.random() - 0.5) * 0.05;
+            addMarker({ lat: 51.0447 + latOffset, lng: -114.0719 + lngOffset }, r.name, r.description);
+          });
+        }, err => console.error("Firestore error:", err));
+      }
 
-            // --- Page Navigation Logic ---
-            function showSection(hash) {
-                // Default to #home if hash is empty or just '#'
-                const targetHash = (hash === '' || hash === '#') ? '#home' : hash;
-                console.log(`Navigation: Attempting to show section for hash: "${targetHash}"`);
-                
-                // Hide all sections
-                sections.forEach(section => {
-                    section.classList.remove('active');
-                });
-
-                // Show the target section
-                const targetSection = document.querySelector(targetHash);
-                if (targetSection) {
-                    targetSection.classList.add('active');
-                    console.log(`Navigation: Section "${targetHash}" activated.`);
-                } else {
-                    console.error(`Navigation: Target section element not found for ID: ${targetHash}`);
-                }
-
-                // Update active state for nav links
-                navLinks.forEach(link => {
-                    // Use getAttribute to get the literal href value
-                    if (link.getAttribute('href') === targetHash) {
-                        link.classList.add('active');
-                        console.log(`Navigation: Nav link for "${targetHash}" set to active.`);
-                    } else {
-                        link.classList.remove('active');
-                    }
-                });
-                
-                // Close mobile menu after navigation
-                mobileMenu.classList.add('hidden');
-                
-                // Scroll to top of the page
-                window.scrollTo(0, 0);
-
-                // Initialize map if on directory section and map is not yet initialized
-                if (targetHash === '#directory' && typeof google !== 'undefined' && typeof google.maps !== 'undefined' && !map) {
-                    console.log("Map: Directory section active, initializing map.");
-                    initMap();
-                } else if (targetHash === '#directory' && map) {
-                    console.log("Map: Directory section active, map already initialized. Resizing and recentering.");
-                    // If map already initialized, just ensure it's displayed and recentered
-                    google.maps.event.trigger(map, 'resize');
-                    map.setCenter(map.getCenter());
-                }
-            }
-
-            // --- Firebase Firestore (Community Directory) ---
-            // This listener primarily ensures firebaseDb and currentUserId are set.
-            // Map loading is now handled more directly by showSection and initMap.
-            document.addEventListener('firebaseAuthReady', () => {
-                firebaseDb = window.firebaseDb;
-                currentUserId = window.currentUserId;
-                console.log("Firebase Auth: Ready. User ID:", currentUserId);
-
-                // If map is already initialized and we are on directory, fetch resources.
-                // This handles cases where auth becomes ready *after* directory is shown.
-                if (map && document.querySelector('#directory').classList.contains('active')) {
-                    console.log("Firebase: Map active on directory, fetching resources (after auth ready).");
-                    fetchResourcesAndAddMarkers();
-                }
-            });
-
-            // Fetch and display resources in real-time
-            function fetchResourcesAndAddMarkers() {
-                console.log("Firestore: Attempting to fetch resources for map markers.");
-                const resourcesListDiv = document.getElementById('resources-list'); // Still reference for error logging
-
-                if (!firebaseDb || !currentUserId) {
-                    console.warn("Firestore: DB or User ID not available for fetching resources. This should be handled by firebaseAuthReady listener.");
-                    return; // Will be retried when firebaseAuthReady fires
-                }
-
-                // Query the PUBLIC collection for community resources
-                const q = query(collection(firebaseDb, `artifacts/${window.appId}/public/data/community_resources`));
-
-                onSnapshot(q, (snapshot) => {
-                    console.log("Firestore: Received snapshot update.");
-                    markers.forEach(marker => marker.setMap(null)); // Clear existing map markers
-                    markers = []; // Reset markers array
-
-                    if (snapshot.empty) {
-                        console.log("Firestore: No community resources found in Firestore (public collection).");
-                        return;
-                    }
-
-                    snapshot.forEach((doc) => {
-                        const resource = doc.data();
-                        console.log("Firestore: Processing resource:", resource.name);
-                        // Add marker to map (using dummy coordinates for now, ideally geocode address)
-                        if (map) {
-                            const latOffset = (Math.random() - 0.5) * 0.05; // +/- 0.025 degrees
-                            const lngOffset = (Math.random() - 0.5) * 0.05;
-                            const dummyLat = 51.0447 + latOffset;
-                            const dummyLng = -114.0719 + lngOffset;
-                            addMarker({ lat: dummyLat, lng: dummyLng }, resource.name, resource.description);
-                        } else {
-                            console.warn(`Firestore: Map not initialized when trying to add marker for ${resource.name}.`);
-                        }
-                    });
-                }, (error) => {
-                    console.error("Firestore: Error fetching documents from Firestore: ", error);
-                    // Log the error, but don't display it to the user as the list is hidden
-                });
-            }
-
-            // --- Contact Form Submission ---
-            const contactForm = document.getElementById('contact-form');
-            const contactFormMessage = document.getElementById('contact-form-message');
-
-            if (contactForm) {
-                contactForm.addEventListener('submit', async function(e) {
-                    e.preventDefault(); // Prevent default form submission
-                    console.log("Contact Form: Submission initiated.");
-
-                    const name = document.getElementById('contact-name').value;
-                    const email = document.getElementById('contact-email').value;
-                    const message = document.getElementById('contact-message').value;
-
-                    // Simulate sending email
-                    contactFormMessage.textContent = "Sending your message...";
-                    contactFormMessage.classList.remove('text-red-500', 'text-green-500');
-                    contactFormMessage.classList.add('text-gray-600');
-
-                    try {
-                        // For this demo, we'll just simulate a delay and success
-                        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
-                        contactFormMessage.textContent = "Message sent successfully! (Simulated)";
-                        contactFormMessage.classList.remove('text-gray-600');
-                        contactFormMessage.classList.add('text-green-500');
-                        contactForm.reset();
-                        console.log("Contact Form: Message sent (simulated) successfully.");
-
-                    } catch (error) {
-                        console.error("Contact Form: Submission error:", error);
-                        contactFormMessage.textContent = `Failed to send message: ${error.message || 'Please try again.'}`;
-                        contactFormMessage.classList.remove('text-gray-600', 'text-green-500');
-                        contactFormMessage.classList.add('text-red-500');
-                    }
-                });
-            }
-
-            // --- Event Listeners for Navigation ---
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetHash = this.getAttribute('href'); // e.g., '#home', '#directory'
-                    console.log(`Nav Click: User clicked link to: "${targetHash}"`);
-                    // Update URL hash without jumping
-                    history.pushState(null, null, targetHash);
-                    showSection(targetHash);
-                });
-            });
-
-            // Handle browser back/forward buttons
-            window.addEventListener('popstate', function() {
-                // For popstate, use window.location.hash directly
-                const currentHash = window.location.hash;
-                console.log(`Popstate: URL hash changed to: "${currentHash}"`);
-                showSection(currentHash);
-            });
-            
-            // Toggle mobile menu
-            mobileMenuButton.addEventListener('click', function() {
-                mobileMenu.classList.toggle('hidden');
-                console.log("Mobile Menu: Toggled visibility.");
-            });
-
-            // Show initial section based on URL hash
-            const initialHash = window.location.hash;
-            console.log(`Initial Load: Current hash is "${initialHash}".`);
-            showSection(initialHash);
-
-            // Load Google Maps script early, it will call initMap when ready
-            loadGoogleMapsScript();
+      function showSection(hash) {
+        const tgt = (!hash || hash === '#') ? '#home' : hash;
+        sections.forEach(s => s.classList.remove('active'));
+        const sec = document.querySelector(tgt);
+        if (sec) sec.classList.add('active');
+        navLinks.forEach(link => {
+          link.classList[ link.getAttribute('href') === tgt ? 'add' : 'remove' ]('active');
         });
-    </script>
+        mobileMenu.classList.add('hidden');
+        window.scrollTo(0, 0);
+        if (tgt === '#directory') {
+          if (map) {
+            google.maps.event.trigger(map, 'resize'); map.setCenter(map.getCenter());
+          } else {
+            initMap();
+          }
+        }
+      }
+
+      navLinks.forEach(link => link.addEventListener('click', e => {
+        e.preventDefault();
+        history.pushState(null, null, link.getAttribute('href'));
+        showSection(link.getAttribute('href'));
+      }));
+
+      window.addEventListener('popstate', () => showSection(window.location.hash));
+      mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+      const contactForm = document.getElementById('contact-form');
+      const contactMsg  = document.getElementById('contact-form-message');
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', async e => {
+          e.preventDefault();
+          contactMsg.textContent = "Sending your message...";
+          contactMsg.className = 'mt-4 text-center text-gray-600';
+          try {
+            await new Promise(r => setTimeout(r, 1500));
+            contactMsg.textContent = "Message sent successfully! (Simulated)";
+            contactMsg.className = 'mt-4 text-center text-green-500';
+            contactForm.reset();
+          } catch (err) {
+            contactMsg.textContent = `Failed to send message: ${err.message || 'Try again.'}`;
+            contactMsg.className = 'mt-4 text-center text-red-500';
+          }
+        });
+      }
+
+      showSection(window.location.hash);
+      loadGoogleMapsScript();
+    });
+  </script>
 </body>
 </html>
+```
