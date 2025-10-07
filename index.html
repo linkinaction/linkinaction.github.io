@@ -3,26 +3,411 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link in Action - Your Link to Calgary's Community Resources</title>
+    <title>Link in Action - Your Link to Calgary’s Community Resources</title>
 
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS for modern, responsive styling -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts for professional typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import the functions you need from the Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    <!-- Firebase Configuration -->
-    <script type="module" src="js/firebase-config.js"></script>
+        // Global variables for Firebase (provided by the environment)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Global variables to be used in the main script
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
+        window.currentUserId = null; 
+        window.isAuthReady = false;
+
+        // Authenticate user
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                window.currentUserId = user.uid;
+                console.log("Firebase Auth: Authenticated user ID:", window.currentUserId);
+            } else {
+                try {
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                        window.currentUserId = auth.currentUser.uid;
+                        console.log("Firebase Auth: Signed in with custom token:", window.currentUserId);
+                    } else {
+                        await signInAnonymously(auth);
+                        window.currentUserId = auth.currentUser.uid;
+                        console.log("Firebase Auth: Signed in anonymously:", window.currentUserId);
+                    }
+                } catch (error) {
+                    console.error("Firebase Auth: Error during authentication:", error);
+                }
+            }
+            window.isAuthReady = true;
+            document.dispatchEvent(new CustomEvent('firebaseAuthReady'));
+        });
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .nav-link.active { color: #dc2626; font-weight: 600; }
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .gm-style-iw-d { overflow-x: hidden !important; }
+        .gm-style-iw-c { padding: 12px !important; }
+    </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
-    <!-- Your existing HTML content remains exactly the same -->
-    
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#home" class="nav-link text-2xl font-bold text-gray-900">Link in Action</a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="nav-link text-gray-600 hover:text-red-600 transition-colors duration-300 active">Home</a>
+                <a href="#directory" class="nav-link text-gray-600 hover:text-red-600 transition-colors duration-300">Community Directory</a>
+                <a href="#join" class="nav-link text-gray-600 hover:text-red-600 transition-colors duration-300">Join the Network</a>
+                <a href="#about" class="nav-link text-gray-600 hover:text-red-600 transition-colors duration-300">About</a>
+                <a href="#contact" class="nav-link text-gray-600 hover:text-red-600 transition-colors duration-300">Contact</a>
+            </nav>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-900 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <a href="#home" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Home</a>
+            <a href="#directory" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Community Directory</a>
+            <a href="#join" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Join the Network</a>
+            <a href="#about" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">About</a>
+            <a href="#contact" class="nav-link block px-6 py-3 text-gray-600 hover:bg-gray-100">Contact</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="page-section active">
+            <div class="relative bg-red-700">
+                <div class="absolute inset-0">
+                    <img class="w-full h-full object-cover" src="./images/hero.jpg" alt="Calgary skyline with a modern bridge at dusk" onerror="this.onerror=null;this.src='https://placehold.co/1600x900/ef4444/ffffff?text=Calgary+Skyline+Fallback';">
+                    <div class="absolute inset-0 bg-red-600 opacity-10 mix-blend-multiply" aria-hidden="true"></div>
+                </div>
+                <div class="relative max-w-4xl mx-auto text-center py-24 px-6 sm:py-32 lg:py-48">
+                    <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">Welcome to Link In Action</h1>
+                    <p class="mt-6 text-xl text-red-100">Your Link to Calgary’s Community Resources</p>
+                    <a href="#directory" class="nav-link mt-8 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-red-600 bg-white hover:bg-red-50 sm:w-auto transition-colors">
+                        Explore Community Resources
+                    </a>
+                </div>
+            </div>
+             <div class="bg-white">
+                <div class="max-w-4xl mx-auto py-16 px-6 sm:py-24 lg:px-8 text-center">
+                    <h2 class="text-3xl font-extrabold text-gray-900">Link In Action</h2>
+                    <p class="mt-4 text-lg text-gray-600">Calgary’s centralized platform for discovering community programs and services. Whether you’re new to the city or seeking support, we make it easy to find the right programs for your needs. With many organizations providing similar services and important resources often hard to find, Link In Action brings clarity, access, and connection to the forefront of community support.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Directory Section -->
+        <section id="directory" class="page-section py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Community Directory</h2>
+                    <p class="mt-4 text-lg text-gray-600">Find the resources you need, right in your community.</p>
+                </div>
+
+                <!-- Search Form -->
+                <div class="bg-gray-100 p-8 rounded-lg shadow-md mb-12">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <input type="text" id="keyword-search" placeholder="Search by keyword (e.g. 'TIES', 'food')" class="col-span-1 lg:col-span-2 w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500">
+                        <select id="program-type-filter" class="w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500">
+                            <option value="all">All Program Types</option>
+                            <option value="settlement">Settlement Services</option>
+                            <option value="language">Language Classes</option>
+                            <option value="food">Food Assistance</option>
+                            <option value="library">Library Services</option>
+                        </select>
+                        <select id="location-filter" class="w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500">
+                            <option value="all">All Locations</option>
+                            <option value="NE">NE</option><option value="NW">NW</option><option value="SE">SE</option><option value="SW">SW</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Google Map -->
+                <div id="map" class="bg-gray-200 rounded-lg shadow-md mb-12"></div>
+            </div>
+        </section>
+
+        <!-- Other sections (Join, About, Contact) -->
+        <section id="join" class="page-section py-16 sm:py-24">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Join the Network</h2>
+                    <p class="mt-4 text-lg text-gray-600">Get involved and make a difference in our community.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-2">Volunteer Opportunities</h3>
+                        <p class="text-gray-600">Organizations may list volunteer opportunities here.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-2">Calls to Action</h3>
+                        <p class="text-gray-600">Community members and organizations can respond to posted calls to action.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-2">Research Posters</h3>
+                        <p class="text-gray-600">Posters targeting immigrants or newcomers can be listed here.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="about" class="page-section py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <div class="text-center mb-12"><h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">About Us</h2></div>
+                <div class="space-y-12">
+                    <div><h3 class="text-2xl font-bold text-red-600 mb-4">Our Mission</h3><p class="text-lg text-gray-600">Link In Action was developed to enhance access to community services by providing a centralized, user-friendly digital platform that connects individuals with local organizations and programs in Calgary. Our mission is to bridge service gaps, promote inclusion, and empower individuals through streamlined access to vital resources.</p></div>
+                    <div><h3 class="text-2xl font-bold text-red-600 mb-4">Our Objectives</h3><ul class="list-disc list-inside space-y-2 text-lg text-gray-600"><li>Empower users through customized search tools</li><li>Centralize access to community services</li><li>Enhance visibility and reduce redundancy</li></ul></div>
+                    <div><h3 class="text-2xl font-bold text-red-600 mb-4">Our Team</h3><p class="text-lg text-gray-600">Meet the people behind Link In Action: Jasman & Arfa.</p></div>
+                </div>
+            </div>
+        </section>
+        <section id="contact" class="page-section py-16 sm:py-24">
+          <div class="container mx-auto px-6 max-w-2xl">
+            <div class="text-center mb-12"><h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Contact Us</h2><p class="mt-4 text-lg text-gray-600">If you have questions or need assistance, please reach out to us.</p></div>
+            <form id="contact-form" action="https://script.google.com/macros/s/AKfycbxOVDMT8Rw8qEbXyZEIaWSqVMU6DnFMyrxKltTzfYhhaR_yhzck7vK1PxMWx8JZGLiz/exec" method="post" class="bg-white p-8 rounded-lg shadow-md space-y-6">
+              <div><label for="contact-name" class="block text-sm font-medium text-gray-700">Name</label><input type="text" id="contact-name" name="name" required class="mt-1 block w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500"></div>
+              <div><label for="contact-email" class="block text-sm font-medium text-gray-700">Email</label><input type="email" id="contact-email" name="email" required class="mt-1 block w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500"></div>
+              <div><label for="contact-message" class="block text-sm font-medium text-gray-700">Message</label><textarea id="contact-message" name="message" rows="5" required class="mt-1 block w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500"></textarea></div>
+              <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700 transition-colors">Send Message</button>
+            </form>
+            <div id="contact-form-message" class="mt-4 text-center"></div>
+          </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-red-900 text-white"> 
+        <div class="container mx-auto py-8 px-6 text-center">
+            <div class="flex justify-center space-x-6">
+                <a href="https://www.linkedin.com/company/linkinaction" target="_blank" aria-label="LinkedIn" class="text-white hover:opacity-75 transition-opacity"><img src="./images/linkedin.jpg" alt="LinkedIn Logo" class="w-7 h-7" onerror="this.onerror=null;this.src='https://placehold.co/28x28/0A66C2/ffffff?text=LI';"></a>
+                <a href="https://www.instagram.com/linkinaction" target="_blank" aria-label="Instagram" class="text-white hover:opacity-75 transition-opacity"><img src="./images/instagram.jpg" alt="Instagram Logo" class="w-7 h-7" onerror="this.onerror=null;this.src='https://placehold.co/28x28/E1306C/ffffff?text=IG';"></a>
+                <a href="mailto:linkinaction@gmail.com" aria-label="Email" class="text-white hover:opacity-75 transition-opacity"><img src="./images/email.jpg" alt="Email Icon" class="w-7 h-7" onerror="this.onerror=null;this.src='https://placehold.co/28x28/D44638/ffffff?text=Email';"></a>
+            </div>
+        </div>
+    </footer>
+
     <!-- Main Application Script -->
-    <script type="module" src="js/app.js"></script>
+    <script>
+        const GOOGLE_MAPS_API_KEY = 'AIzaSyBTO9piU4s9LVGYvob043hACb2S2hg7CMU'; 
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Global Variables ---
+            let map;
+            let infoWindow;
+            let firebaseDb;
+            let currentUserId;
+            const sections = document.querySelectorAll('.page-section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // --- Location Data Store ---
+            const locations = [
+                { name: "TIES (The Immigrant Education Society)", address: "3675 63 Ave NE #200", phone: "587-392-4177", lat: 51.1085, lng: -113.9514, quadrant: "NE", type: "language", marker: null },
+                { name: "TIES (The Immigrant Education Society)", address: "3820 32 St NE", phone: "403-291-0002", lat: 51.0864, lng: -113.9885, quadrant: "NE", type: "language", marker: null },
+                { name: "TIES (The Immigrant Education Society)", address: "1723 40 St SE", phone: "403-235-3666", lat: 51.0384, lng: -113.9691, quadrant: "SE", type: "language", marker: null },
+                { name: "Calgary Immigrant Women’s Association", address: "138 4 Ave SE, Calgary", phone: "403-263-4414", lat: 51.0489, lng: -114.0599, quadrant: "SW", type: "settlement", marker: null },
+                { name: "Calgary Public Library - Central", address: "800 3 St SE", phone: "(403) 260-2600", lat: 51.0450, lng: -114.0583, quadrant: "SE", type: "library", marker: null },
+                { name: "Immigrant Services Calgary", address: "910 7 Ave SW #1200", phone: "(403) 265-1120", lat: 51.0486, lng: -114.0823, quadrant: "SW", type: "settlement", marker: null },
+                { name: "Calgary Food Bank", address: "5000 11 St SE", phone: "(403) 253-2055", lat: 50.9986, lng: -114.0416, quadrant: "SE", type: "food", marker: null },
+            ];
+
+            // --- Google Maps Initialization ---
+            function loadGoogleMapsScript() {
+                if (document.getElementById('google-maps-script')) return;
+                const script = document.createElement('script');
+                script.id = 'google-maps-script';
+                // Note: 'places' library is removed as it's not needed for this simpler version
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=initMap&v=weekly`;
+                script.async = true;
+                document.head.appendChild(script);
+            }
+
+            window.initMap = function() {
+                const mapElement = document.getElementById('map');
+                if (!mapElement) return;
+
+                const calgary = { lat: 51.0447, lng: -114.0719 };
+                map = new google.maps.Map(mapElement, {
+                    center: calgary,
+                    zoom: 11,
+                    mapId: 'DEMO_MAP_ID',
+                });
+
+                infoWindow = new google.maps.InfoWindow();
+
+                locations.forEach(location => addMarker(location));
+                
+                if (window.isAuthReady) {
+                    fetchResourcesAndAddMarkers();
+                } else {
+                    document.addEventListener('firebaseAuthReady', fetchResourcesAndAddMarkers);
+                }
+            };
+
+            function addMarker(location) {
+                const marker = new google.maps.Marker({
+                    position: { lat: location.lat, lng: location.lng },
+                    map: map,
+                    title: location.name,
+                });
+                location.marker = marker; // Store marker reference
+
+                // When a marker is clicked, show an info window with basic details
+                marker.addListener('click', () => {
+                    if (infoWindow) infoWindow.close();
+                    
+                    const contentString = `
+                        <div class="p-2">
+                            <h3 class="font-bold text-lg mb-1">${location.name}</h3>
+                            <p class="text-sm mb-1"><strong>Address:</strong> ${location.address}</p>
+                            <p class="text-sm mb-1"><strong>Phone:</strong> ${location.phone}</p>
+                        </div>`;
+
+                    infoWindow.setContent(contentString);
+                    infoWindow.open(map, marker);
+                });
+            }
+            
+            // --- Search and Filtering Logic ---
+            function filterLocations() {
+                const keyword = document.getElementById('keyword-search').value.toLowerCase();
+                const type = document.getElementById('program-type-filter').value;
+                const quadrant = document.getElementById('location-filter').value;
+
+                locations.forEach(loc => {
+                    const nameMatch = loc.name.toLowerCase().includes(keyword);
+                    const addressMatch = loc.address.toLowerCase().includes(keyword);
+                    const typeMatch = (type === 'all' || loc.type === type);
+                    const quadrantMatch = (quadrant === 'all' || loc.quadrant === quadrant);
+
+                    // Show marker if it matches all active filters
+                    if ((nameMatch || addressMatch) && typeMatch && quadrantMatch) {
+                        loc.marker?.setMap(map);
+                    } else {
+                        loc.marker?.setMap(null);
+                    }
+                });
+            }
+
+            // --- Firebase Firestore Logic ---
+            function fetchResourcesAndAddMarkers() {
+                firebaseDb = window.firebaseDb;
+                currentUserId = window.currentUserId;
+                if (!firebaseDb || !currentUserId) return;
+
+                const q = query(collection(firebaseDb, `artifacts/${appId}/public/data/community_resources`));
+                onSnapshot(q, (snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
+                        if (change.type === "added") {
+                            const resource = change.doc.data();
+                            const exists = locations.some(loc => loc.name === resource.name && loc.address === resource.address);
+                            if (!exists && resource.lat && resource.lng) {
+                                const newLocation = {
+                                    name: resource.name,
+                                    address: resource.address || "Address not provided",
+                                    phone: resource.phone || "Phone not provided",
+                                    lat: resource.lat,
+                                    lng: resource.lng,
+                                    quadrant: resource.quadrant || "all",
+                                    type: resource.type || "settlement",
+                                    marker: null
+                                };
+                                locations.push(newLocation);
+                                addMarker(newLocation);
+                            }
+                        }
+                    });
+                }, (error) => {
+                    console.error("Firestore: Error fetching documents: ", error);
+                });
+            }
+
+            // --- Page Navigation & Event Listeners ---
+            function showSection(hash) {
+                const targetHash = (hash === '' || hash === '#') ? '#home' : hash;
+                sections.forEach(s => s.classList.toggle('active', `#${s.id}` === targetHash));
+                navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === targetHash));
+                mobileMenu.classList.add('hidden');
+                window.scrollTo(0, 0);
+
+                if (targetHash === '#directory' && !map) {
+                    loadGoogleMapsScript();
+                } else if (targetHash === '#directory' && map) {
+                    google.maps.event.trigger(map, 'resize');
+                }
+            }
+
+            navLinks.forEach(link => link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetHash = link.getAttribute('href');
+                history.pushState(null, null, targetHash);
+                showSection(targetHash);
+            }));
+
+            window.addEventListener('popstate', () => showSection(window.location.hash));
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            
+            // Search filter event listeners
+            document.getElementById('keyword-search').addEventListener('input', filterLocations);
+            document.getElementById('program-type-filter').addEventListener('change', filterLocations);
+            document.getElementById('location-filter').addEventListener('change', filterLocations);
+
+            // Initial page load
+            showSection(window.location.hash);
+            
+            // Contact form logic
+            const contactForm = document.getElementById('contact-form');
+            const contactMessage = document.getElementById('contact-form-message');
+            contactForm.addEventListener('submit', async e => {
+                e.preventDefault();
+                contactMessage.textContent = 'Sending…';
+                contactMessage.className = 'mt-4 text-center text-gray-600';
+                try {
+                    const res = await fetch(contactForm.action, { method: 'POST', body: new FormData(contactForm) });
+                    if (!res.ok) throw new Error(`Status ${res.status}`);
+                    contactForm.reset();
+                    contactMessage.textContent = 'Thank you! Your message has been sent.';
+                    contactMessage.className = 'mt-4 text-center text-green-600';
+                } catch (err) {
+                    contactMessage.textContent = 'Oops—something went wrong. Please try again.';
+                    contactMessage.className = 'mt-4 text-center text-red-600';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
