@@ -1,22 +1,12 @@
-/* Base styles */
-body { 
-    font-family: 'Inter', sans-serif; 
+body { font-family: 'Inter', sans-serif; }
+.nav-link.active { color: #dc2626; font-weight: 600; }
+.page-section { display: none; }
+.page-section.active { display: block; }
+#map {
+    height: 500px;
+    width: 100%;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
-
-.nav-link.active { 
-    color: #dc2626; 
-    font-weight: 600; 
-}
-
-.page-section { 
-    display: none; 
-}
-
-.page-section.active { 
-    display: block; 
-}
-
-/* Import component styles */
-@import 'components/header.css';
-@import 'components/sections.css';
-@import 'components/map.css';
+.gm-style-iw-d { overflow-x: hidden !important; }
+.gm-style-iw-c { padding: 12px !important; }
