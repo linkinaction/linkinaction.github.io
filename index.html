@@ -116,7 +116,7 @@
                 </div>
                 <div class="relative max-w-4xl mx-auto text-center py-24 px-6 sm:py-32 lg:py-48">
                     <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">Welcome to Link In Action</h1>
-                    <p class="mt-6 text-xl text-red-100">Your Link to Calgary’s Community Resources</p>
+                    <p class="mt-6 text-xl text-red-100">Your Link to Calgary's Community Resources</p>
                     <a href="#directory" class="nav-link mt-8 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-red-600 bg-white hover:bg-red-50 sm:w-auto transition-colors">
                         Explore Community Resources
                     </a>
@@ -125,7 +125,7 @@
              <div class="bg-white">
                 <div class="max-w-4xl mx-auto py-16 px-6 sm:py-24 lg:px-8 text-center">
                     <h2 class="text-3xl font-extrabold text-gray-900">Link In Action</h2>
-                    <p class="mt-4 text-lg text-gray-600">Calgary’s centralized platform for discovering community programs and services. Whether you’re new to the city or seeking support, we make it easy to find the right programs for your needs. With many organizations providing similar services and important resources often hard to find, Link In Action brings clarity, access, and connection to the forefront of community support.</p>
+                    <p class="mt-4 text-lg text-gray-600">Calgary's centralized platform for discovering community programs and services. Whether you're new to the city or seeking support, we make it easy to find the right programs for your needs. With many organizations providing similar services and important resources often hard to find, Link In Action brings clarity, access, and connection to the forefront of community support.</p>
                 </div>
             </div>
         </section>
@@ -141,23 +141,59 @@
                 <!-- Search Form -->
                 <div class="bg-gray-100 p-8 rounded-lg shadow-md mb-12">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <input type="text" id="keyword-search" placeholder="Search by keyword (e.g. 'TIES', 'food')" class="col-span-1 lg:col-span-2 w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500">
+                        <input type="text" id="keyword-search" placeholder="Search by keyword (e.g. 'food', 'shelter')" class="col-span-1 lg:col-span-2 w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500">
                         <select id="program-type-filter" class="w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500">
                             <option value="all">All Program Types</option>
-                            <option value="settlement">Settlement Services</option>
-                            <option value="language">Language Classes</option>
-                            <option value="food">Food Assistance</option>
-                            <option value="library">Library Services</option>
+                            <option value="food-shelter">Food & Shelter</option>
+                            <option value="animal-welfare">Animal Welfare</option>
+                            <option value="health-services">Health Services</option>
+                            <option value="community-support">Community Support</option>
+                            <option value="womens-services">Women's Services</option>
+                            <option value="youth-services">Youth Services</option>
+                            <option value="legal-services">Legal Services</option>
+                            <option value="housing-services">Housing Services</option>
+                            <option value="newcomer-services">Newcomer Services</option>
+                            <option value="education">Education</option>
+                            <option value="arts-culture">Arts & Culture</option>
+                            <option value="seniors-services">Seniors Services</option>
+                            <option value="mens-services">Men's Services</option>
+                            <option value="environment">Environment</option>
+                            <option value="sports-recreation">Sports & Recreation</option>
+                            <option value="employment-services">Employment Services</option>
                         </select>
                         <select id="location-filter" class="w-full p-3 rounded-md border-gray-300 focus:ring-red-500 focus:border-red-500">
                             <option value="all">All Locations</option>
-                            <option value="NE">NE</option><option value="NW">NW</option><option value="SE">SE</option><option value="SW">SW</option>
+                            <option value="NW">NW Calgary</option>
+                            <option value="NE">NE Calgary</option>
+                            <option value="SW">SW Calgary</option>
+                            <option value="SE">SE Calgary</option>
+                            <option value="Downtown">Downtown</option>
                         </select>
+                    </div>
+                    <!-- View Toggle -->
+                    <div class="flex items-center space-x-2 p-1 bg-gray-200 rounded-lg mt-4 w-fit ml-auto">
+                        <button id="view-grid-btn" class="px-3 py-1 rounded-md bg-white text-red-600 shadow" title="Grid View">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                        </button>
+                        <button id="view-map-btn" class="px-3 py-1 rounded-md text-gray-600" title="Map View">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707l6 6a1 1 0 001.414 0l6-6A1 1 0 0018 14V4a1 1 0 00-.707-.707l-6-2a1 1 0 00-.586 0l-6 2z" clip-rule="evenodd" /></svg>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Google Map -->
-                <div id="map" class="bg-gray-200 rounded-lg shadow-md mb-12"></div>
+                <!-- Map View -->
+                <div id="map-view" class="hidden">
+                    <div id="map" class="h-[500px] w-full rounded-lg shadow-md mb-12"></div>
+                </div>
+
+                <!-- Directory Grid -->
+                <div id="grid-view">
+                    <div id="directory-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Location cards will be inserted here by JavaScript -->
+                    </div>
+                </div>
+                
+                <p id="no-results" class="text-center text-gray-500 mt-8 hidden">No organizations found matching your criteria.</p>
             </div>
         </section>
 
@@ -190,6 +226,7 @@
                 <div class="space-y-12">
                     <div><h3 class="text-2xl font-bold text-red-600 mb-4">Our Mission</h3><p class="text-lg text-gray-600">Link In Action was developed to enhance access to community services by providing a centralized, user-friendly digital platform that connects individuals with local organizations and programs in Calgary. Our mission is to bridge service gaps, promote inclusion, and empower individuals through streamlined access to vital resources.</p></div>
                     <div><h3 class="text-2xl font-bold text-red-600 mb-4">Our Objectives</h3><ul class="list-disc list-inside space-y-2 text-lg text-gray-600"><li>Empower users through customized search tools</li><li>Centralize access to community services</li><li>Enhance visibility and reduce redundancy</li></ul></div>
+                    <div><h3 class="text-2xl font-bold text-red-600 mb-4">Our Team</h3><p class="text-lg text-gray-600">Meet the people behind Link In Action: Jasman & Arfa.</p></div>
                 </div>
             </div>
         </section>
@@ -233,23 +270,22 @@
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
 
+            // --- Directory Elements ---
+            const directoryGrid = document.getElementById('directory-grid');
+            const noResults = document.getElementById('no-results');
+            const gridView = document.getElementById('grid-view');
+            const mapView = document.getElementById('map-view');
+            const viewGridBtn = document.getElementById('view-grid-btn');
+            const viewMapBtn = document.getElementById('view-map-btn');
+
             // --- Location Data Store ---
-            const locations = [
-                { name: "TIES (The Immigrant Education Society)", address: "3675 63 Ave NE #200", phone: "587-392-4177", lat: 51.1085, lng: -113.9514, quadrant: "NE", type: "language", marker: null },
-                { name: "TIES (The Immigrant Education Society)", address: "3820 32 St NE", phone: "403-291-0002", lat: 51.0864, lng: -113.9885, quadrant: "NE", type: "language", marker: null },
-                { name: "TIES (The Immigrant Education Society)", address: "1723 40 St SE", phone: "403-235-3666", lat: 51.0384, lng: -113.9691, quadrant: "SE", type: "language", marker: null },
-                { name: "Calgary Immigrant Women’s Association", address: "138 4 Ave SE, Calgary", phone: "403-263-4414", lat: 51.0489, lng: -114.0599, quadrant: "SW", type: "settlement", marker: null },
-                { name: "Calgary Public Library - Central", address: "800 3 St SE", phone: "(403) 260-2600", lat: 51.0450, lng: -114.0583, quadrant: "SE", type: "library", marker: null },
-                { name: "Immigrant Services Calgary", address: "910 7 Ave SW #1200", phone: "(403) 265-1120", lat: 51.0486, lng: -114.0823, quadrant: "SW", type: "settlement", marker: null },
-                { name: "Calgary Food Bank", address: "5000 11 St SE", phone: "(403) 253-2055", lat: 50.9986, lng: -114.0416, quadrant: "SE", type: "food", marker: null },
-            ];
+            const locations = [];
 
             // --- Google Maps Initialization ---
             function loadGoogleMapsScript() {
                 if (document.getElementById('google-maps-script')) return;
                 const script = document.createElement('script');
                 script.id = 'google-maps-script';
-                // Note: 'places' library is removed as it's not needed for this simpler version
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=initMap&v=weekly`;
                 script.async = true;
                 document.head.appendChild(script);
@@ -268,7 +304,13 @@
 
                 infoWindow = new google.maps.InfoWindow();
 
-                locations.forEach(location => addMarker(location));
+                // Load data from data.js and initialize markers
+                if (typeof locationsData !== 'undefined') {
+                    locations.length = 0; // Clear existing locations
+                    locations.push(...locationsData);
+                    locations.forEach(location => addMarker(location));
+                    renderGrid(locations);
+                }
                 
                 if (window.isAuthReady) {
                     fetchResourcesAndAddMarkers();
@@ -278,6 +320,8 @@
             };
 
             function addMarker(location) {
+                if (!location.lat || !location.lng) return;
+                
                 const marker = new google.maps.Marker({
                     position: { lat: location.lat, lng: location.lng },
                     map: map,
@@ -294,33 +338,111 @@
                             <h3 class="font-bold text-lg mb-1">${location.name}</h3>
                             <p class="text-sm mb-1"><strong>Address:</strong> ${location.address}</p>
                             <p class="text-sm mb-1"><strong>Phone:</strong> ${location.phone}</p>
+                            ${location.website ? `<p class="text-sm mb-1"><strong>Website:</strong> <a href="${location.website}" target="_blank" class="text-red-600">Visit</a></p>` : ''}
                         </div>`;
 
                     infoWindow.setContent(contentString);
                     infoWindow.open(map, marker);
                 });
             }
-            
+
+            // --- Grid View Rendering ---
+            function renderGrid(locations) {
+                directoryGrid.innerHTML = '';
+                locations.forEach(location => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col';
+                    card.innerHTML = `
+                        <h3 class="text-xl font-bold mb-2 text-red-700">${location.name}</h3>
+                        <p class="text-gray-600 mb-4 flex-grow">${location.description}</p>
+                        <div class="border-t pt-4 mt-auto">
+                            <p class="mb-2"><strong>Address:</strong> ${location.address || 'N/A'}</p>
+                            <p class="mb-2"><strong>Phone:</strong> ${location.phone || 'N/A'}</p>
+                            <div class="flex space-x-4">
+                                ${location.website ? `<a href="${location.website}" target="_blank" class="text-red-600 hover:underline">Website</a>` : ''}
+                                ${location.email ? `<a href="mailto:${location.email}" class="text-red-600 hover:underline">Email</a>` : ''}
+                            </div>
+                        </div>
+                    `;
+                    directoryGrid.appendChild(card);
+                });
+            }
+
             // --- Search and Filtering Logic ---
-            function filterLocations() {
+            function getQuadrant(address) {
+                if (!address) return 'all';
+                const addr = address.toLowerCase();
+                if (addr.includes(' nw')) return 'NW';
+                if (addr.includes(' ne')) return 'NE';
+                if (addr.includes(' sw')) return 'SW';
+                if (addr.includes(' se')) return 'SE';
+                if (addr.includes(' ave sw') || addr.includes(' ave se') || addr.includes(' st sw') || addr.includes(' st se')) {
+                    const parts = addr.split(' ');
+                    const aveIndex = parts.indexOf('ave');
+                    const stIndex = parts.indexOf('st');
+                    
+                    let numberPart = -1;
+                    if(aveIndex > 0) numberPart = parseInt(parts[aveIndex-1], 10);
+                    else if(stIndex > 0) numberPart = parseInt(parts[stIndex-1], 10);
+
+                    if (numberPart > 0 && numberPart < 18) return 'Downtown';
+                }
+                return 'all'; // Default if quadrant not found
+            }
+
+            function filterAndRender() {
                 const keyword = document.getElementById('keyword-search').value.toLowerCase();
                 const type = document.getElementById('program-type-filter').value;
-                const quadrant = document.getElementById('location-filter').value;
+                const locationFilter = document.getElementById('location-filter').value;
 
-                locations.forEach(loc => {
+                const filtered = locations.filter(loc => {
                     const nameMatch = loc.name.toLowerCase().includes(keyword);
-                    const addressMatch = loc.address.toLowerCase().includes(keyword);
-                    const typeMatch = (type === 'all' || loc.type === type);
-                    const quadrantMatch = (quadrant === 'all' || loc.quadrant === quadrant);
+                    const descMatch = loc.description.toLowerCase().includes(keyword);
+                    const typeMatch = type === 'all' || loc.type === type;
+                    const locationMatch = locationFilter === 'all' || getQuadrant(loc.address) === locationFilter;
+                    
+                    return (nameMatch || descMatch) && typeMatch && locationMatch;
+                });
+                
+                if (filtered.length === 0) {
+                    noResults.classList.remove('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                }
 
-                    // Show marker if it matches all active filters
-                    if ((nameMatch || addressMatch) && typeMatch && quadrantMatch) {
-                        loc.marker?.setMap(map);
-                    } else {
-                        loc.marker?.setMap(null);
+                renderGrid(filtered);
+                
+                // Update map markers
+                locations.forEach(loc => {
+                    const isVisible = filtered.some(f => f.name === loc.name && f.address === loc.address);
+                    if (loc.marker) {
+                        loc.marker.setMap(isVisible ? map : null);
                     }
                 });
             }
+            
+            // --- View Toggling ---
+            viewGridBtn.addEventListener('click', () => {
+                mapView.classList.add('hidden');
+                gridView.classList.remove('hidden');
+                viewGridBtn.classList.add('bg-white', 'text-red-600', 'shadow');
+                viewMapBtn.classList.remove('bg-white', 'text-red-600', 'shadow');
+            });
+
+            viewMapBtn.addEventListener('click', () => {
+                gridView.classList.add('hidden');
+                mapView.classList.remove('hidden');
+                viewMapBtn.classList.add('bg-white', 'text-red-600', 'shadow');
+                viewGridBtn.classList.remove('bg-white', 'text-red-600', 'shadow');
+                
+                // Initialize map if not already done
+                if (!map) {
+                    loadGoogleMapsScript();
+                } else {
+                    // Invalidate map size to ensure it renders correctly after being hidden
+                    setTimeout(() => google.maps.event.trigger(map, 'resize'), 0);
+                }
+            });
 
             // --- Firebase Firestore Logic ---
             function fetchResourcesAndAddMarkers() {
@@ -341,12 +463,13 @@
                                     phone: resource.phone || "Phone not provided",
                                     lat: resource.lat,
                                     lng: resource.lng,
-                                    quadrant: resource.quadrant || "all",
-                                    type: resource.type || "settlement",
+                                    type: resource.type || "community-support",
+                                    description: resource.description || "A community resource in Calgary.",
                                     marker: null
                                 };
                                 locations.push(newLocation);
                                 addMarker(newLocation);
+                                renderGrid(locations); // Re-render grid with new data
                             }
                         }
                     });
@@ -364,9 +487,11 @@
                 window.scrollTo(0, 0);
 
                 if (targetHash === '#directory' && !map) {
-                    loadGoogleMapsScript();
-                } else if (targetHash === '#directory' && map) {
-                    google.maps.event.trigger(map, 'resize');
+                    // Load data from data.js if available
+                    if (typeof locationsData !== 'undefined' && locations.length === 0) {
+                        locations.push(...locationsData);
+                        renderGrid(locations);
+                    }
                 }
             }
 
@@ -381,12 +506,18 @@
             mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
             
             // Search filter event listeners
-            document.getElementById('keyword-search').addEventListener('input', filterLocations);
-            document.getElementById('program-type-filter').addEventListener('change', filterLocations);
-            document.getElementById('location-filter').addEventListener('change', filterLocations);
+            document.getElementById('keyword-search').addEventListener('input', filterAndRender);
+            document.getElementById('program-type-filter').addEventListener('change', filterAndRender);
+            document.getElementById('location-filter').addEventListener('change', filterAndRender);
 
             // Initial page load
             showSection(window.location.hash);
+            
+            // Load data from data.js on initial load
+            if (typeof locationsData !== 'undefined' && locations.length === 0) {
+                locations.push(...locationsData);
+                renderGrid(locations);
+            }
             
             // Contact form logic
             const contactForm = document.getElementById('contact-form');
