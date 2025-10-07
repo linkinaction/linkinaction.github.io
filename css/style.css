@@ -1,0 +1,22 @@
+/* Base styles */
+body { 
+    font-family: 'Inter', sans-serif; 
+}
+
+.nav-link.active { 
+    color: #dc2626; 
+    font-weight: 600; 
+}
+
+.page-section { 
+    display: none; 
+}
+
+.page-section.active { 
+    display: block; 
+}
+
+/* Import component styles */
+@import 'components/header.css';
+@import 'components/sections.css';
+@import 'components/map.css';

@@ -1,0 +1,13 @@
+/* Section-specific styles */
+#home .hero-section {
+    position: relative;
+    background-color: #dc2626;
+}
+
+#directory .search-form {
+    background-color: #f3f4f6;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin-bottom: 3rem;
+}
