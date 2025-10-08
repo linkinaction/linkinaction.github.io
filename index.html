@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Link in Action - Your Link to Calgary’s Community Resources</title>
+    
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -20,6 +21,32 @@
             },
             "query-input": "required name=search_term_string"
         }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Link in Action",
+        "alternateName": "LIA",
+        "url": "https://linkinaction.ca",
+        "description": "Calgary's centralized platform for discovering community programs and services",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Calgary",
+            "addressRegion": "AB",
+            "addressCountry": "CA"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "linkinaction@gmail.com",
+            "contactType": "customer service"
+        },
+        "sameAs": [
+            "https://www.linkedin.com/company/linkinaction",
+            "https://www.instagram.com/linkinaction"
+        ]
     }
     </script>
     <!-- Tailwind CSS for modern, responsive styling -->
