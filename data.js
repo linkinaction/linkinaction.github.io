@@ -1144,35 +1144,37 @@ const locationsData = [
         lng: -114.0673
     },
     {
-        name: "Calgary Ethnic Seniors Association (carya)",
-        address: "200, 1000 8 Ave SW, Calgary, AB",
+        name: "Carya",
+        address: "5000 Bowness Road NW
+Calgary, AB
+T3B 0B9",
         phone: "403-269-9888",
         website: "https://caryacalgary.ca",
         email: "",
         type: "seniors-services",
-        description: "A non-profit organization providing seniors services services to the Calgary community.",
+        description: "A social impact organization providing mental health as well as family services to the Calgary community.",
         lat: 51.0456,
         lng: -114.0838
     },
     {
         name: "Calgary Community Gardens Association (Green Calgary)",
-        address: "205, 223 12 Ave SW, Calgary, AB",
-        phone: "403-230-1443",
-        website: "https://www.calgarycommunitygardens.com",
+        address: "#810 105 12 Ave SE, Calgary, AB T2G 1A1",
+        phone: "+13688878675",
+        website: "https://www.greencalgary.org/about",
         email: "",
         type: "environment",
-        description: "A non-profit organization providing environment services to the Calgary community.",
+        description: "An urban environmental charity helping canadians live a more sustainable life through environmental action.",
         lat: 51.0423,
         lng: -114.0673
     },
     {
-        name: "Calgary Immigrant Support Hub",
+        name: "Centre For Newcomers",
         address: "125, 565 - 36 Street NE, Calgary, AB",
         phone: "403-569-3325",
         website: "https://www.centrefornewcomers.ca",
         email: "",
         type: "newcomer-services",
-        description: "A non-profit organization providing newcomer services services to the Calgary community.",
+        description: "A social profit organization providing newcomer and immigrant services to the Calgary community.",
         lat: 51.0561,
         lng: -113.9782
     }
