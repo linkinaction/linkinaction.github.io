@@ -61,7 +61,7 @@ const locationsData = [
         website: "https://ab.211.ca",
         email: "",
         type: "health-services",
-        description: "A non-profit organization providing health services services to the Calgary community.",
+        description: "A non-profit organization providing health services  to the Calgary community.",
         lat: 51.0454,
         lng: -114.0837
     },
