@@ -758,15 +758,5 @@ const locationsData = [
         lat: null,
         lng: null
     },
-    {
-        name: "Calgary Volunteer Lawyers",
-        address: "",
-        phone: "",
-        website: "",
-        email: "",
-        type: "legal-services",
-        description: "",
-        lat: null,
-        lng: null
-    }
+
 ];
