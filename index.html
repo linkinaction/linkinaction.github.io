@@ -367,9 +367,7 @@
                     map: map,
                     title: location.name,
                 });
-                location.marker = marker; // Store marker reference
-
-                // When a marker is clicked, show an info window with basic details
+                location.marker = marker; 
                 marker.addListener('click', () => {
                     if (infoWindow) infoWindow.close();
                     
