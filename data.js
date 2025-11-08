@@ -187,15 +187,15 @@ const locationsData = [
         lng: -114.0838
     },
     {
-        name: "Youth centres of Calgary",
+        name: "YCC - Youth Centres of Calgary (Ogden)",
         address: "7400 23 St SE, Calgary, AB T2C 0X9",
         phone: "(403) 850-7884",
         website: "http://www.youthcentresofcalgary.com",
         email: "info@youthcentresofcalgary.com",
         type: "child-family-services",
-        description: "An organization that helps support vulnerable youth in Calgary.",
-        lat: 50.9897,
-        lng: -113.9740
+        description: "Since 2018, YCC has provided vulnerable youth ages 8-15 in Calgary's underserved neighborhoods with a safe, welcoming, and empowering 'home away from home.' From our cozy, community based centres in Ogden and Forest Lawn, we offer free after-school and summer programs designed to meet kids' most essential needs:\n\n* Caring relationships with mentors who truly show up\n* Nutritious meals\n* A safe place to be a kid — to play, to create, to belong\n\nPrograms include art and music, sports coaching, technology access, reading spaces, gardening, and real life mentorship. Every day, we help kids build resilience, confidence, and joy. IT’S SIMPLE – BUT IT’S POWERFUL.",
+        lat: 50.9867,
+        lng: -114.0029
     },
     {
         name: "The Mustard Seed",
@@ -758,5 +758,15 @@ const locationsData = [
         lat: null,
         lng: null
     },
-
+    {
+        name: "YCC - Youth Centres of Calgary (Forest Lawn)",
+        address: "2620 40 St SE, Calgary, AB T2B 1C2",
+        phone: "(403) 850-7884",
+        website: "http://www.youthcentresofcalgary.com",
+        email: "info@youthcentresofcalgary.com",
+        type: "child-family-services",
+        description: "Since 2018, YCC has provided vulnerable youth ages 8-15 in Calgary's underserved neighborhoods with a safe, welcoming, and empowering 'home away from home.' From our cozy, community based centres in Ogden and Forest Lawn, we offer free after-school and summer programs designed to meet kids' most essential needs:\n\n* Caring relationships with mentors who truly show up\n* Nutritious meals\n* A safe place to be a kid — to play, to create, to belong\n\nPrograms include art and music, sports coaching, technology access, reading spaces, gardening, and real life mentorship. Every day, we help kids build resilience, confidence, and joy. IT’S SIMPLE – BUT IT’S POWERFUL.",
+        lat: 51.0308,
+        lng: -113.9753
+    },
 ];
