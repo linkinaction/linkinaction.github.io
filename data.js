@@ -718,9 +718,9 @@ const locationsData = [
     {
         name: "Calgary Women's Emergency Shelter",
         address: "",
-        phone: "",
+        phone: "403-234-7233",
         website: "https://ywcacalgary.ca/services/domestic-violence",
-        email: "",
+        email: "help@fearisnotlove.ca",
         type: "food-shelter",
         description: "The Calgary Homlessness Foundation allocates resources to frontline agencies that support individuals facing homelessness.",
         lat: null,
@@ -750,14 +750,14 @@ const locationsData = [
     },
     {
         name: "Calgary Allied Arts Foundation",
-        address: "",
+        address: "#435 – 1721 29th Ave SW Calgary, AB T2T 6T7",
         phone: "",
         website: "https://www.calgaryalliedartsfoundation.ca/",
-        email: "",
+        email: "caafresidency@gmail.com",
         type: "arts-culture",
         description: "A not-for-profit organization that help promote art and culture.",
-        lat: null,
-        lng: null
+        lat: 51.0275,
+        lng: -114.1004
     },
     {
         name: "YCC - Youth Centres of Calgary (Forest Lawn)",
