@@ -1,5 +1,5 @@
 // data
-const locationsData = [
+export const locationsData = [
     {
         name: "Calgary Centre for Men and Families",
         address: "Unit 5, 3828 Parkhill Street SW Calgary, Alberta, T2S 2Z6",
